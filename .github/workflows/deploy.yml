@@ -1,0 +1,69 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master, main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, pdo, xml, curl
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-8.2-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-8.2-
+
+      - name: Install Composer dependencies (production)
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
+      - name: Install npm dependencies and build assets
+        run: npm ci && npm run build
+
+      # -----------------------------------------------------------------------
+      # Add your deployment step below. Examples:
+      #
+      # Option A — SSH deploy:
+      # - name: Deploy via SSH
+      #   uses: appleboy/ssh-action@v1
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     script: |
+      #       cd /var/www/birthday-reminder
+      #       git pull origin main
+      #       composer install --no-dev --optimize-autoloader
+      #       npm ci && npm run build
+      #       php artisan migrate --force
+      #       php artisan config:cache
+      #       php artisan route:cache
+      #       php artisan view:cache
+      #
+      # Option B — Laravel Forge webhook:
+      # - name: Deploy via Forge
+      #   run: curl -s "${{ secrets.FORGE_DEPLOY_WEBHOOK }}"
+      # -----------------------------------------------------------------------
+      - name: Deployment placeholder
+        run: echo "Add your deployment step above."
+
