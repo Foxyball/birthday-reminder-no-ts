@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -41,7 +40,7 @@ class CategorySeeder extends Seeder
                 'description' => 'Other contacts that do not fit into the above categories',
                 'status' => true,
                 'created_at' => now(),
-            ]
+            ],
         ]);
     }
 }
