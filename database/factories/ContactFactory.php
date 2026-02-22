@@ -25,7 +25,7 @@ class ContactFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->optional()->safeEmail(),
             'phone' => fake()->optional()->phoneNumber(),
-            'birthday' => fake()->optional()->dateTimeBetween('-80 years', '-1 year')->format('Y-m-d'),
+            'birthday' => fake()->dateTimeBetween('-80 years', '-1 year')->format('Y-m-d'),
             'image' => null,
             'notes' => fake()->optional()->paragraph(),
             'gift_ideas' => fake()->optional()->sentence(),

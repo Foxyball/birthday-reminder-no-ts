@@ -2,14 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Str;
 
 class Notification extends Model
 {
+    protected $keyType = 'string';
+
+    public $incrementing = false;
+
     protected $fillable = [
+        'id',
         'user_id',
+        'notifiable_id',
+        'notifiable_type',
         'title',
         'message',
         'type',
@@ -27,6 +36,11 @@ class Notification extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function notifiable(): MorphTo
+    {
+        return $this->morphTo();
     }
 
     public function scopeUnread(Builder $query): Builder
@@ -56,10 +70,13 @@ class Notification extends Model
         return ! is_null($this->read_at);
     }
 
-    public static function createInfoNotification(int $userId, string $title, ?string $message = null, ?string $link = null): self
+    public static function createInfoNotification(int $userId, string $title, Model $notifiable, ?string $message = null, ?string $link = null): self
     {
         return self::create([
+            'id' => Str::uuid(),
             'user_id' => $userId,
+            'notifiable_id' => $notifiable->getKey(),
+            'notifiable_type' => $notifiable->getMorphClass(),
             'title' => $title,
             'message' => $message,
             'type' => 'info',
@@ -67,10 +84,13 @@ class Notification extends Model
         ]);
     }
 
-    public static function createSuccessNotification(int $userId, string $title, ?string $message = null, ?string $link = null): self
+    public static function createSuccessNotification(int $userId, string $title, Model $notifiable, ?string $message = null, ?string $link = null): self
     {
         return self::create([
+            'id' => Str::uuid(),
             'user_id' => $userId,
+            'notifiable_id' => $notifiable->getKey(),
+            'notifiable_type' => $notifiable->getMorphClass(),
             'title' => $title,
             'message' => $message,
             'type' => 'success',
