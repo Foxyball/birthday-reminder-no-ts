@@ -17,17 +17,17 @@ class UserSeeder extends Seeder
                 'name' => 'hsabev',
                 'email' => 'hsabev@sprintax.com',
                 'email_verified_at' => now(),
-                'password' => 'password',
+                'password' => bcrypt('password'),
                 'is_locked' => 0,
-                'role' => 1,
+                'role' => '1',
             ],
             [
                 'name' => 'John Doe',
                 'email' => 'john@example.com',
                 'email_verified_at' => now(),
-                'password' => 'password',
+                'password' => bcrypt('password'),
                 'is_locked' => 0,
-                'role' => 0,
+                'role' => '0',
             ],
         ]);
     }
