@@ -21,6 +21,7 @@ class CategoryFactory extends Factory
             'slug' => fake()->unique()->slug(),
             'description' => fake()->paragraph(),
             'status' => fake()->boolean(),
+            'created_at' => now(),
         ];
     }
 }
