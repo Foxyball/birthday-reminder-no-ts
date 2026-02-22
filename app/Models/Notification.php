@@ -53,7 +53,7 @@ class Notification extends Model
 
     public function isRead(): bool
     {
-        return !is_null($this->read_at);
+        return ! is_null($this->read_at);
     }
 
     public static function createInfoNotification(int $userId, string $title, ?string $message = null, ?string $link = null): self

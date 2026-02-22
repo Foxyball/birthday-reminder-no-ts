@@ -43,23 +43,23 @@ class Contact extends Model
     /**
      * Get the full URL to the contact's image.
      */
-//    public function getImageUrlAttribute(): ?string
-//    {
-//        return ImageHelper::url($this->image);
-//    }
+    //    public function getImageUrlAttribute(): ?string
+    //    {
+    //        return ImageHelper::url($this->image);
+    //    }
 
     /**
      * Boot method to handle model events.
      */
-//    protected static function boot()
-//    {
-//        parent::boot();
-//
-//        // Clean up image file when contact is deleted
-//        static::deleting(function (Contact $contact) {
-//            if ($contact->image) {
-//                ImageHelper::delete($contact->image);
-//            }
-//        });
-//    }
+    //    protected static function boot()
+    //    {
+    //        parent::boot();
+    //
+    //        // Clean up image file when contact is deleted
+    //        static::deleting(function (Contact $contact) {
+    //            if ($contact->image) {
+    //                ImageHelper::delete($contact->image);
+    //            }
+    //        });
+    //    }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('type')->default('info'); // e.g., info, success, warning, error
             $table->string('link')->nullable();
             $table->morphs('notifiable');
-//            $table->text('data');
+            // $table->text('data');
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
 
