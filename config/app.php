@@ -123,4 +123,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'aliases' => [
+        'SidebarHelper' => App\Helpers\SidebarHelper::class,
+    ],
+
 ];

@@ -48,4 +48,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    // check if user is admin
+    public function isAdmin(): bool
+    {
+        return $this->role === '1';
+    }
 }
