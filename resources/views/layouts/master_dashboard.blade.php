@@ -61,6 +61,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
 <script defer src="{{asset('js/bundle.js')}}"></script>
+@vite('resources/js/global-admin.js')
 @stack('scripts')
 
 @if(session('toast'))

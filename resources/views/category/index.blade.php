@@ -26,8 +26,14 @@
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 
     <script>
+        document.addEventListener('alpine:init', function () {});
+
         $(document).ready(function() {
-            $('body').on('click', '.change-status', function() {
+            $('#category-table').on('draw.dt', function () {
+                Alpine.initTree(document.getElementById('category-table'));
+            });
+
+            $('body').on('change', '.change-status', function() {
                 let isChecked = $(this).is(':checked');
                 let id = $(this).data('id');
 
@@ -39,11 +45,11 @@
                         id: id
                     },
                     success: function(data) {
-                        toastr.success(data.message);
+                        showToast('success', data.message);
                     },
                     error: function(xhr, status, error) {
-                        let errorMessage = xhr.status + ': ' + xhr.statusText
-                        toastr.error(errorMessage);
+                        let errorMessage = xhr.status + ': ' + xhr.statusText;
+                        showToast('error', errorMessage);
                     }
                 });
             });

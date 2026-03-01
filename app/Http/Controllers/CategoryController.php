@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\CategoryDataTable;
+use App\Helpers\Toastr;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ class CategoryController extends Controller
 
         Category::create($data);
 
-        return redirect()->route('category.index')->with('success', __(self::SUCCESS_MESSAGE));
+        return redirect()->route('category.index')->with('status', __(self::SUCCESS_MESSAGE));
     }
 
     /**
@@ -78,6 +79,20 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $category->delete();
+
+        return response(['status' => 'success', 'message' => __(self::DELETE_MESSAGE)]);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $category = Category::findOrFail($request->id);
+
+        $category->status = $request->status == "true" ? 1 : 0;
+
+        $category->save();
+
+        return response(['status' => 'success', 'message' => __(self::STATUS_UPDATE_MESSAGE)]);
     }
 }

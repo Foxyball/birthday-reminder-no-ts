@@ -29,12 +29,18 @@ class CategoryDataTable extends DataTable
                 return $edit . ' ' . $delete;
             })
             ->addColumn('status', function ($query) {
-                $checked = $query->status == 1 ? 'checked' : '';
+                $checked = $query->status == 1 ? 'true' : 'false';
+                $checkedAttr = $query->status == 1 ? 'checked' : '';
 
-                return '<label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" ' . $checked . ' name="status" data-id="' . $query->id . '" class="sr-only peer change-status">
-                    <div class="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:bg-brand-500 after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4 dark:bg-gray-700"></div>
-                </label>';
+                return '<div x-data="{ switcherToggle: ' . $checked . ' }">
+                    <label class="flex cursor-pointer select-none items-center">
+                        <div class="relative">
+                            <input type="checkbox" ' . $checkedAttr . ' data-id="' . $query->id . '" class="sr-only change-status" @change="switcherToggle = !switcherToggle">
+                            <div class="block h-6 w-11 rounded-full transition-colors" :class="switcherToggle ? \'bg-brand-500\' : \'bg-gray-200 dark:bg-white/10\'"></div>
+                            <div class="shadow-theme-sm absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white duration-300 ease-linear" :class="switcherToggle ? \'translate-x-full\' : \'translate-x-0\'"></div>
+                        </div>
+                    </label>
+                </div>';
             })
             ->rawColumns(['action', 'status'])
             ->setRowId('id');
