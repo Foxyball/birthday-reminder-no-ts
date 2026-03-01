@@ -215,9 +215,10 @@ function handleStatusToggle() {
     if (!window.jQuery) return;
 
     $("body").on("change", ".change-status", function () {
-        const isChecked = $(this).is(":checked");
-        const id = $(this).data("id");
-        const url = $(this).closest("[data-status-url]").data("status-url");
+        const $checkbox = $(this);
+        const isChecked = $checkbox.is(":checked");
+        const id = $checkbox.data("id");
+        const url = $checkbox.closest("[data-status-url]").data("status-url");
 
         if (!url) return;
 
@@ -230,6 +231,15 @@ function handleStatusToggle() {
             },
             error: function (xhr) {
                 showToast("error", xhr.status + ": " + xhr.statusText);
+
+                // Revert checkbox to previous state
+                $checkbox.prop("checked", !isChecked);
+
+                // Revert Alpine switcherToggle to stay in sync with the checkbox
+                const alpineEl = $checkbox.closest("[x-data]")[0];
+                if (alpineEl && window.Alpine) {
+                    Alpine.$data(alpineEl).switcherToggle = !isChecked;
+                }
             },
         });
     });

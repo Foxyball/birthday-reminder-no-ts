@@ -6,7 +6,6 @@ use App\DataTables\CategoryDataTable;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -41,10 +40,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $data = $request->validated();
-        $data['slug'] = Str::slug($data['name']);
-
-        Category::create($data);
+        Category::create($request->validated());
 
         return redirect()->route('category.index')->with('status', __(self::SUCCESS_MESSAGE));
     }
@@ -70,10 +66,7 @@ class CategoryController extends Controller
      */
     public function update(StoreCategoryRequest $request, Category $category)
     {
-        $data = $request->validated();
-        $data['slug'] = Str::slug($data['name']);
-
-        $category->update($data);
+        $category->update($request->validated());
 
         return redirect()->route('category.index')->with('status', __(self::UPDATE_MESSAGE));
     }
