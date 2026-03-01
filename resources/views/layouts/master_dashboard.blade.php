@@ -45,6 +45,9 @@
 
         <main>
             <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+
+                @include('partials.alerts')
+
                 <div class="grid grid-cols-12 gap-4 md:gap-6">
 
                     @yield('content')
@@ -55,7 +58,10 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
 <script defer src="{{asset('js/bundle.js')}}"></script>
+@stack('scripts')
 
 @if(session('toast'))
     <x-toastr :type="session('toast.type')" :message="session('toast.message')" :title="session('toast.title')" :showButton="session('toast.showButton')" :buttonText="session('toast.buttonText')" :buttonUrl="session('toast.buttonUrl')" />
