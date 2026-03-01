@@ -60,19 +60,34 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+<script>
+    window.AppLang = {
+        datatable: {
+            sProcessing:   @json(__('messages.dt_processing')),
+            sLengthMenu:   @json(__('messages.dt_length_menu')),
+            sZeroRecords:  @json(__('messages.dt_zero_records')),
+            sInfo:         @json(__('messages.dt_info')),
+            sInfoEmpty:    @json(__('messages.dt_info_empty')),
+            sInfoFiltered: @json(__('messages.dt_info_filtered')),
+            sSearch:       @json(__('messages.dt_search')),
+            oPaginate: {
+                sFirst:    @json(__('messages.dt_paginate_first')),
+                sPrevious: @json(__('messages.dt_paginate_previous')),
+                sNext:     @json(__('messages.dt_paginate_next')),
+                sLast:     @json(__('messages.dt_paginate_last')),
+            },
+            oAria: {
+                sSortAscending:  @json(__('messages.dt_aria_sort_asc')),
+                sSortDescending: @json(__('messages.dt_aria_sort_desc')),
+            },
+        },
+    };
+</script>
 <script defer src="{{asset('js/bundle.js')}}"></script>
 @vite('resources/js/global-admin.js')
 @stack('scripts')
 
-@if(session('toast'))
-    <x-toastr :type="session('toast.type')" :message="session('toast.message')" :title="session('toast.title')" :showButton="session('toast.showButton')" :buttonText="session('toast.buttonText')" :buttonUrl="session('toast.buttonUrl')" />
-@endif
 
-@if(session('toasts'))
-    @foreach(session('toasts') as $t)
-        <x-toastr :type="$t['type'] ?? 'info'" :message="$t['message'] ?? ''" :title="$t['title'] ?? null" :showButton="$t['showButton'] ?? false" :buttonText="$t['buttonText'] ?? 'View more'" :buttonUrl="$t['buttonUrl'] ?? null" />
-    @endforeach
-@endif
 
 </body>
 </html>

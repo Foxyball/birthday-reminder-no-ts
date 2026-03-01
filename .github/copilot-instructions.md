@@ -4,47 +4,70 @@
 
 - PHP code follows PSR-4 autoloading (see [composer.json](composer.json)).
 - Use 4 spaces for indentation, LF line endings, and UTF-8 encoding ([.editorconfig](.editorconfig)).
-- Run `vendor/bin/pint` to auto-format code before finalizing changes.
-- Use descriptive variable and method names (e.g., `isRegisteredForDiscounts`).
+- Run `vendor/bin/pint` to auto-format PHP before finalizing changes.
 - Check sibling files for structure and naming before creating new files.
-- For Tailwind CSS, follow existing utility class patterns in [resources/views/](resources/views/).
-
-## Architecture
-
-- Follows standard Laravel 12 structure: [app/Http/Controllers](app/Http/Controllers), [app/Models](app/Models), [resources/views](resources/views), [app/Helpers](app/Helpers).
-- CRUD operations use DataTables for listing and filtering (see controller/view patterns).
-- Service boundaries: Controllers handle HTTP, Models handle data, Views handle presentation, Helpers provide shared logic.
 
 ## Build and Test
 
 - Install dependencies: `composer install` and `npm install`.
-- Build frontend: `npm run build` or `npm run dev`.
-- Run tests: `php artisan test --compact` (uses Pest).
-- Create tests: `php artisan make:test --pest {Name}`.
+- Build frontend: `npm run build` or `npm run dev` (Vite). Rebuild after every JS/CSS change.
+- Run tests: `php artisan test --compact` (Pest). Create tests: `php artisan make:test --pest {Name}`.
 - Do not create verification scripts if tests exist.
 
-## Project Conventions
+## Architecture
 
-- Stick to the existing directory structure; do not create new base folders without approval.
-- CRUDs use DataTables for index/listing pages.
-- Always check for reusable components before creating new ones.
-- Do not change dependencies without approval.
-- Documentation files should only be created if explicitly requested.
+Laravel 12 app with Yajra DataTables, Alpine.js, and Tailwind CSS (class-based dark mode).
 
-## Integration Points
+- **Admin routes** are prefixed `/bgc/`, grouped under `['auth', 'admin']` middleware in [routes/web.php](routes/web.php). The `admin` middleware checks `users.role === 1` ([app/Http/Middleware/EnsureAdmin.php](app/Http/Middleware/EnsureAdmin.php)).
+- **Locale** is set per-session via `SetLocale` middleware; switch with `route('lang.switch', $locale)`.
 
-- Uses Laravel packages via Composer (see [composer.json](composer.json)).
-- Uses Tailwind CSS for styling ([tailwind.config.js](tailwind.config.js)).
-- Uses Livewire for reactive components.
-- No external APIs are referenced by default; check for integration logic in [app/Helpers](app/Helpers) and [config/](config/).
+## CRUD Pattern (follow exactly for new resources)
 
-## Security
+Each resource requires these files — use [app/DataTables/CategoryDataTable.php](app/DataTables/CategoryDataTable.php) and [app/Http/Controllers/CategoryController.php](app/Http/Controllers/CategoryController.php) as the canonical reference:
 
-- Authentication uses Laravel's default session guard ([config/auth.php](config/auth.php)).
-- User model: [app/Models/User.php](app/Models/User.php), migration: [database/migrations/0001_01_01_000000_create_users_table.php](database/migrations/0001_01_01_000000_create_users_table.php).
-- Sensitive actions are protected by middleware and policies (see [app/Http/Middleware](app/Http/Middleware)).
-- Passwords are hashed using Laravel's built-in mechanisms.
+1. **`app/DataTables/{Name}DataTable.php`** — defines columns, renders action buttons and status toggles as raw HTML, reinit Alpine via the global `draw.dt` handler.
+2. **`app/Http/Controllers/{Name}Controller.php`** — injects the DataTable into `index()`, uses route-model binding for `edit`/`update`/`destroy`, declares message key constants at the top.
+3. **`app/Http/Requests/Store{Name}Request.php`** — single FormRequest reused for both store and update.
+4. **`resources/views/{name}/index|create|edit.blade.php`** — extends `layouts.master_dashboard`.
 
----
+Register a custom `change-status` PUT route **before** the resource route (so it isn't shadowed):
+```php
+Route::put('/bgc/{name}/change-status', ...)->name('admin.{name}.change-status');
+Route::resource('/bgc/{name}', ...);
+```
 
-If any section is unclear or incomplete, please provide feedback for further refinement.
+## DataTable Conventions
+
+- Status toggle column: rendered as Alpine `x-data` HTML inside the DataTable class; `change-status` class on the checkbox triggers the global handler in [resources/js/global-admin.js](resources/js/global-admin.js).
+- Pass the status URL via `data-status-url` on the table element: `$dataTable->table(['data-status-url' => route('admin.{name}.change-status')])`.
+- Delete links use class `delete-item` with the destroy route as `href`; the global SweetAlert2 handler fires a DELETE AJAX call and expects `{ status: 'success'|'error', message: '...' }`.
+- After a successful delete, the DataTable auto-reloads via `.ajax.reload(null, false)`.
+- After each `draw.dt` event, Alpine is reinitialised via `handleDataTableAlpineReinit()` — required because Alpine doesn't observe dynamically injected DataTable rows.
+
+## JS / Frontend
+
+- [resources/js/global-admin.js](resources/js/global-admin.js) provides reusable handlers: `showToast`, `closeToast`, `handleDeleteDelegation`, `handleStatusToggle`, `handleDataTableAlpineReinit`.
+- Dark mode: Alpine toggles a `dark` class on `<body>` (persisted to `localStorage`). Tailwind uses `darkMode: 'class'` ([tailwind.config.js](tailwind.config.js)).
+- DataTables CDN CSS does not support dark mode — overrides live in [resources/views/partials/stylesheets.blade.php](resources/views/partials/stylesheets.blade.php).
+
+## Translations & Flash Messages
+
+- All UI strings use `__('messages.key')`. Add keys to both [resources/lang/en/messages.php](resources/lang/en/messages.php) and [resources/lang/bg/messages.php](resources/lang/bg/messages.php).
+- Controllers define translation key constants (`const SUCCESS_MESSAGE = 'messages.xxx'`) and redirect with `->with('status', __(self::SUCCESS_MESSAGE))`.
+- JS success/error feedback uses `showToast('success'|'error', message)`.
+
+## Helpers
+
+- `SidebarHelper::setActive(['route.name'])` returns `menu-item-active` or `menu-item-inactive` for sidebar links.
+- Models with a `name` field auto-generate `slug` via `Str::slug($data['name'])` in store and update.
+
+## Skills
+
+Detailed, example-driven references for common tasks:
+- **Controllers** — [.github/skills/controllers/SKILL.md](.github/skills/controllers/SKILL.md): full controller pattern with annotated example, route registration, FormRequest, and new-resource checklist.
+- **Global Admin JS** — [.github/skills/global-admin/SKILL.md](.github/skills/global-admin/SKILL.md): all AJAX patterns (delete, status toggle, toasts, Alpine reinit). Do not write inline AJAX in Blade views.
+
+## Constraints
+
+- Do not add new base folders or dependencies without approval.
+- Do not create documentation files unless explicitly requested.

@@ -24,9 +24,24 @@ return [
     'inactive' => 'Inactive',
 
     // Category flash messages
-    'category_success_message'       => 'Category created successfully.',
-    'category_update_message'        => 'Category updated successfully.',
-    'category_delete_message'        => 'Category deleted successfully.',
+    'category_success_message' => 'Category created successfully.',
+    'category_update_message' => 'Category updated successfully.',
+    'category_delete_message' => 'Category deleted successfully.',
     'category_status_update_message' => 'Category status updated successfully.',
     'category_relation_error_message' => 'Category cannot be deleted because it has related records.',
+
+    // DataTables UI
+    'dt_processing' => 'Processing...',
+    'dt_length_menu' => 'Show _MENU_ entries',
+    'dt_zero_records' => 'No matching records found',
+    'dt_info' => 'Showing _START_ to _END_ of _TOTAL_ entries',
+    'dt_info_empty' => 'Showing 0 to 0 of 0 entries',
+    'dt_info_filtered' => '(filtered from _MAX_ total entries)',
+    'dt_search' => 'Search:',
+    'dt_paginate_first' => 'First',
+    'dt_paginate_previous' => 'Previous',
+    'dt_paginate_next' => 'Next',
+    'dt_paginate_last' => 'Last',
+    'dt_aria_sort_asc' => ': activate to sort ascending',
+    'dt_aria_sort_desc' => ': activate to sort descending',
 ];

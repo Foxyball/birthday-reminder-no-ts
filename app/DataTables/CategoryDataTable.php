@@ -21,21 +21,21 @@ class CategoryDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $edit = '<a href="' . route('category.edit', $query->id) . '" class="inline-flex items-center rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-600 transition-colors">' .
-                    __('messages.edit') . '</a>';
-                $delete = '<a href="' . route('category.destroy', $query->id) . '" class="inline-flex items-center rounded-lg bg-error-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-error-600 transition-colors ml-2 delete-item">' .
-                    __('messages.delete') . '</a>';
+                $edit = '<a href="'.route('category.edit', $query->id).'" class="inline-flex items-center rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-600 transition-colors">'.
+                    __('messages.edit').'</a>';
+                $delete = '<a href="'.route('category.destroy', $query->id).'" class="inline-flex items-center rounded-lg bg-error-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-error-600 transition-colors ml-2 delete-item">'.
+                    __('messages.delete').'</a>';
 
-                return $edit . ' ' . $delete;
+                return $edit.' '.$delete;
             })
             ->addColumn('status', function ($query) {
                 $checked = $query->status == 1 ? 'true' : 'false';
                 $checkedAttr = $query->status == 1 ? 'checked' : '';
 
-                return '<div x-data="{ switcherToggle: ' . $checked . ' }">
+                return '<div x-data="{ switcherToggle: '.$checked.' }">
                     <label class="flex cursor-pointer select-none items-center">
                         <div class="relative">
-                            <input type="checkbox" ' . $checkedAttr . ' data-id="' . $query->id . '" class="sr-only change-status" @change="switcherToggle = !switcherToggle">
+                            <input type="checkbox" '.$checkedAttr.' data-id="'.$query->id.'" class="sr-only change-status" @change="switcherToggle = !switcherToggle">
                             <div class="block h-6 w-11 rounded-full transition-colors" :class="switcherToggle ? \'bg-brand-500\' : \'bg-gray-200 dark:bg-white/10\'"></div>
                             <div class="shadow-theme-sm absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white duration-300 ease-linear" :class="switcherToggle ? \'translate-x-full\' : \'translate-x-0\'"></div>
                         </div>
@@ -97,6 +97,6 @@ class CategoryDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Category_' . date('YmdHis');
+        return 'Category_'.date('YmdHis');
     }
 }

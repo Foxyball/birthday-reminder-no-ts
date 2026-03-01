@@ -246,6 +246,10 @@ document.addEventListener("DOMContentLoaded", function () {
     setupAjaxCsrf();
     handleDeleteDelegation();
     handleDataTableAlpineReinit();
+
+    if (window.jQuery && typeof $.fn.dataTable !== 'undefined' && window.AppLang?.datatable) {
+        $.extend(true, $.fn.dataTable.defaults, { language: window.AppLang.datatable });
+    }
 });
 
 if (window.jQuery) {
