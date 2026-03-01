@@ -1,16 +1,95 @@
 ---
 name: controllers
-description: This skill provides a set of controllers that can be used to manage and control various aspects of the system. It includes functionalities for handling user input, managing state, and coordinating interactions between different components.
+description: How to create and structure resource controllers in this Laravel project, including DataTable injection, route-model binding, flash messages, status toggling, and AJAX delete responses.
 ---
 
-Always check the [Project Guidelines](../copilot-instructions.md) for coding standards, architecture, and testing practices before making changes to the controllers.
-For store and update operations, ensure that you are following the existing patterns for validation and data handling as seen in other controllers.
-When creating new controllers, adhere to the PSR-4 autoloading standard and place them in the appropriate namespace under `app/Http/Controllers`.
-Make use of Laravel's features such as middleware, request validation, and resource controllers to maintain consistency and leverage the framework's capabilities effectively.
-Before finalizing changes, run `vendor/bin/pint` to auto-format your code and ensure it adheres to the project's coding standards. Additionally, create tests for any new functionality using Pest and run them to ensure your changes are covered and do not introduce regressions.
-If you need to create new routes for your controllers, make sure to define them in the appropriate route files (e.g., `routes/web.php` or `routes/api.php`) and follow the existing routing conventions.
-Always check for reusable components and services before creating new ones, and ensure that your controllers are focused on handling HTTP requests and delegating business logic to services or models as needed.
-When working with views in your controllers, ensure that you are passing the necessary data and following the existing patterns for rendering views and handling responses.
-If your controller interacts with models, make sure to use Eloquent relationships and query scopes where appropriate to keep your code clean and maintainable.
-Finally, document any new controllers or methods you create with clear and concise comments to help other developers understand the purpose and functionality of your code.
-For validation, create Form Request classes using `php artisan make:request {Name}Request` and use them in your controller methods to keep your controllers clean and maintainable. This also allows for better reusability of validation logic across different controllers.
+## Structure
+
+Every resource controller follows this exact pattern. Use `CategoryController` as the canonical reference.
+
+```php
+class CategoryController extends Controller
+{
+    // 1. Declare all translation key constants up top
+    const SUCCESS_MESSAGE        = 'messages.category_success_message';
+    const UPDATE_MESSAGE         = 'messages.category_update_message';
+    const DELETE_MESSAGE         = 'messages.category_delete_message';
+    const STATUS_UPDATE_MESSAGE  = 'messages.category_status_update_message';
+    const RELATION_ERROR_MESSAGE = 'messages.category_relation_error_message';
+
+    // 2. Inject the DataTable into index()
+    public function index(CategoryDataTable $dataTable)
+    {
+        return $dataTable->render('category.index');
+    }
+
+    // 3. store() and update() share one FormRequest; always append slug
+    public function store(StoreCategoryRequest $request)
+    {
+        $data = $request->validated();
+        $data['slug'] = Str::slug($data['name']);
+        Category::create($data);
+        return redirect()->route('category.index')->with('status', __(self::SUCCESS_MESSAGE));
+    }
+
+    // 4. edit() and update() use route-model binding (type-hint the Model)
+    public function edit(Category $category)
+    {
+        return view('category.edit', compact('category'));
+    }
+
+    public function update(StoreCategoryRequest $request, Category $category)
+    {
+        $data = $request->validated();
+        $data['slug'] = Str::slug($data['name']);
+        $category->update($data);
+        return redirect()->route('category.index')->with('status', __(self::UPDATE_MESSAGE));
+    }
+
+    // 5. destroy() returns JSON — consumed by the global AJAX delete handler
+    public function destroy(string $id)
+    {
+        $category = Category::findOrFail($id);
+        $category->delete();
+        return response(['status' => 'success', 'message' => __(self::DELETE_MESSAGE)]);
+    }
+
+    // 6. changeStatus() — always a separate PUT route registered BEFORE Route::resource
+    public function changeStatus(Request $request)
+    {
+        $category = Category::findOrFail($request->id);
+        $category->status = $request->status == 'true' ? 1 : 0;
+        $category->save();
+        return response(['status' => 'success', 'message' => __(self::STATUS_UPDATE_MESSAGE)]);
+    }
+}
+```
+
+## Routes
+
+Register `change-status` **before** `Route::resource` or Laravel will shadow it:
+
+```php
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::put('/bgc/category/change-status', [CategoryController::class, 'changeStatus'])
+        ->name('admin.category.change-status');
+    Route::resource('/bgc/category', CategoryController::class);
+});
+```
+
+## FormRequest
+
+One `Store{Name}Request` is reused for both store and update. Generate with:
+```bash
+php artisan make:request StoreCategoryRequest
+```
+
+## Checklist for a new resource
+
+1. `php artisan make:controller {Name}Controller -r`
+2. `php artisan make:request Store{Name}Request`
+3. Create `app/DataTables/{Name}DataTable.php` (copy `CategoryDataTable` as template)
+4. Add routes to `routes/web.php` (change-status PUT before resource)
+5. Create `resources/views/{name}/index.blade.php`, `create.blade.php`, `edit.blade.php`
+6. Add translation keys to both `resources/lang/en/messages.php` and `resources/lang/bg/messages.php`
+7. Run `vendor/bin/pint app/Http/Controllers/{Name}Controller.php`

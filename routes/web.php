@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -24,5 +25,13 @@ Route::get('/lang/{locale}', function (string $locale) {
 
     return redirect()->back();
 })->name('lang.switch');
+
+Route::middleware(['auth', 'admin'])->group(function () {
+
+    // PRIORITY 1
+    Route::put('/bgc/category/change-status', [CategoryController::class, 'changeStatus'])->name('admin.category.change-status');
+
+    Route::resource('/bgc/category', CategoryController::class);
+});
 
 require __DIR__.'/auth.php';

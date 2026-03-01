@@ -45,6 +45,9 @@
 
         <main>
             <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+
+                @include('partials.alerts')
+
                 <div class="grid grid-cols-12 gap-4 md:gap-6">
 
                     @yield('content')
@@ -55,17 +58,44 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+<script>
+    window.AppLang = {
+        datatable: {
+            sProcessing:   @json(__('messages.dt_processing')),
+            sLengthMenu:   @json(__('messages.dt_length_menu')),
+            sZeroRecords:  @json(__('messages.dt_zero_records')),
+            sInfo:         @json(__('messages.dt_info')),
+            sInfoEmpty:    @json(__('messages.dt_info_empty')),
+            sInfoFiltered: @json(__('messages.dt_info_filtered')),
+            sSearch:       @json(__('messages.dt_search')),
+            oPaginate: {
+                sFirst:    @json(__('messages.dt_paginate_first')),
+                sPrevious: @json(__('messages.dt_paginate_previous')),
+                sNext:     @json(__('messages.dt_paginate_next')),
+                sLast:     @json(__('messages.dt_paginate_last')),
+            },
+            oAria: {
+                sSortAscending:  @json(__('messages.dt_aria_sort_asc')),
+                sSortDescending: @json(__('messages.dt_aria_sort_desc')),
+            },
+        },
+        swal: {
+            delete_title:  @json(__('messages.swal_delete_title')),
+            delete_text:   @json(__('messages.swal_delete_text')),
+            confirm_btn:   @json(__('messages.swal_confirm_btn')),
+            cancel_btn:    @json(__('messages.swal_cancel_btn')),
+            deleted_title: @json(__('messages.swal_deleted_title')),
+            error_title:   @json(__('messages.swal_error_title')),
+            cant_delete:   @json(__('messages.swal_cant_delete')),
+            unexpected:    @json(__('messages.swal_unexpected')),
+            ajax_error:    @json(__('messages.swal_ajax_error')),
+        },
+    };
+</script>
 <script defer src="{{asset('js/bundle.js')}}"></script>
-
-@if(session('toast'))
-    <x-toastr :type="session('toast.type')" :message="session('toast.message')" :title="session('toast.title')" :showButton="session('toast.showButton')" :buttonText="session('toast.buttonText')" :buttonUrl="session('toast.buttonUrl')" />
-@endif
-
-@if(session('toasts'))
-    @foreach(session('toasts') as $t)
-        <x-toastr :type="$t['type'] ?? 'info'" :message="$t['message'] ?? ''" :title="$t['title'] ?? null" :showButton="$t['showButton'] ?? false" :buttonText="$t['buttonText'] ?? 'View more'" :buttonUrl="$t['buttonUrl'] ?? null" />
-    @endforeach
-@endif
-
+@vite('resources/js/global-admin.js')
+@stack('scripts')
 </body>
 </html>
