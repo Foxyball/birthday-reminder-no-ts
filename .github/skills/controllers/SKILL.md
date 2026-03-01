@@ -2,6 +2,7 @@
 name: controllers
 description: This skill provides a set of controllers that can be used to manage and control various aspects of the system. It includes functionalities for handling user input, managing state, and coordinating interactions between different components.
 ---
+
 Always check the [Project Guidelines](../copilot-instructions.md) for coding standards, architecture, and testing practices before making changes to the controllers.
 For store and update operations, ensure that you are following the existing patterns for validation and data handling as seen in other controllers.
 When creating new controllers, adhere to the PSR-4 autoloading standard and place them in the appropriate namespace under `app/Http/Controllers`.

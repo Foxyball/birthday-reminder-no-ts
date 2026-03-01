@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo "Running Laravel Pint..."
+vendor/bin/pint
+
+echo "Running Prettier..."
+npx prettier . --write
+
+git add -A

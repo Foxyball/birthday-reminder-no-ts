@@ -2,10 +2,7 @@
     "mcpServers": {
         "laravel-boost": {
             "command": "C:\\xampp\\php\\php.exe",
-            "args": [
-                "C:\\work\\birthday-reminder\\artisan",
-                "boost:mcp"
-            ]
+            "args": ["C:\\work\\birthday-reminder\\artisan", "boost:mcp"]
         }
     }
 }
