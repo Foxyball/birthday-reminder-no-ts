@@ -2,17 +2,23 @@
 
 namespace App\View\Components;
 
-use Illuminate\View\Component;
 use Illuminate\Support\Str;
+use Illuminate\View\Component;
 
 class Toastr extends Component
 {
     public string $type;
+
     public string $title;
+
     public string $message;
+
     public bool $showButton;
+
     public ?string $buttonText;
+
     public ?string $buttonUrl;
+
     public string $id;
 
     public function __construct($type = 'success', $message = '', $title = null, $showButton = false, $buttonText = 'View more', $buttonUrl = null)
