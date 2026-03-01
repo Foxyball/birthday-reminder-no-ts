@@ -52,10 +52,10 @@
         <p class="text-base {{ $messageColor ?? '' }}">{{ $message }}</p>
     </div>
     @if(filter_var($showButton, FILTER_VALIDATE_BOOLEAN) && $buttonUrl)
-        <button type="button" class="inline-flex items-center text-emerald-900 bg-emerald-200 box-border border border-transparent hover:bg-emerald-300 focus:ring-4 focus:ring-emerald-300 shadow-xs font-medium leading-5 rounded-md text-sm px-4 py-2 focus:outline-none">
+        <a href="{{ $buttonUrl }}" class="inline-flex items-center text-emerald-900 bg-emerald-200 box-border border border-transparent hover:bg-emerald-300 focus:ring-4 focus:ring-emerald-300 shadow-xs font-medium leading-5 rounded-md text-sm px-4 py-2 focus:outline-none">
             <svg class="w-3.5 h-3.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/><path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
             {{ $buttonText }}
-        </button>
+        </a>
     @endif
 </div>
 
