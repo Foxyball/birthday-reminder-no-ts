@@ -55,5 +55,17 @@
     </div>
 </div>
 
-<script defer src="{{asset('js/bundle.js')}}"></script></body>
+<script defer src="{{asset('js/bundle.js')}}"></script>
+
+@if(session('toast'))
+    <x-toastr :type="session('toast.type')" :message="session('toast.message')" :title="session('toast.title')" :showButton="session('toast.showButton')" :buttonText="session('toast.buttonText')" :buttonUrl="session('toast.buttonUrl')" />
+@endif
+
+@if(session('toasts'))
+    @foreach(session('toasts') as $t)
+        <x-toastr :type="$t['type'] ?? 'info'" :message="$t['message'] ?? ''" :title="$t['title'] ?? null" :showButton="$t['showButton'] ?? false" :buttonText="$t['buttonText'] ?? 'View more'" :buttonUrl="$t['buttonUrl'] ?? null" />
+    @endforeach
+@endif
+
+</body>
 </html>
