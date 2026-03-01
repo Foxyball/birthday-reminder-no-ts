@@ -44,4 +44,15 @@ return [
     'dt_paginate_last' => 'Last',
     'dt_aria_sort_asc' => ': activate to sort ascending',
     'dt_aria_sort_desc' => ': activate to sort descending',
+
+    // SweetAlert delete confirmation
+    'swal_delete_title' => 'Are you sure?',
+    'swal_delete_text' => 'You will not be able to undo this action!',
+    'swal_confirm_btn' => 'Yes, delete it!',
+    'swal_cancel_btn' => 'Cancel',
+    'swal_deleted_title' => 'Deleted!',
+    'swal_error_title' => 'Error',
+    'swal_cant_delete' => 'Cannot Delete',
+    'swal_unexpected' => 'Unexpected response from server',
+    'swal_ajax_error' => 'An unexpected error occurred',
 ];

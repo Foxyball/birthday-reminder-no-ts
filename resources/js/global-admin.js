@@ -123,16 +123,17 @@ function handleDeleteDelegation() {
             e.preventDefault();
 
             var deleteUrl = btn.getAttribute("href");
+            var t = (window.AppLang && window.AppLang.swal) || {};
 
             Swal.fire({
-                title: "Сигурни ли сте?",
-                text: "Няма да можете да върнете това действие!",
+                title: t.delete_title || "Are you sure?",
+                text: t.delete_text || "You will not be able to undo this action!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Да, изтрий!",
-                cancelButtonText: "Отказ",
+                confirmButtonText: t.confirm_btn || "Yes, delete it!",
+                cancelButtonText: t.cancel_btn || "Cancel",
             }).then(function (result) {
                 if (!result.isConfirmed) return;
 
@@ -162,7 +163,7 @@ function handleDeleteDelegation() {
                     .then(function (data) {
                         if (data && data.status === "success") {
                             Swal.fire({
-                                title: "Deleted!",
+                                title: t.deleted_title || "Deleted!",
                                 text: data.message,
                                 icon: "success",
                                 timer: 1500,
@@ -185,22 +186,14 @@ function handleDeleteDelegation() {
                                 window.location.reload();
                             }
                         } else if (data && data.status === "error") {
-                            Swal.fire("Cant Delete", data.message, "error");
+                            Swal.fire(t.cant_delete || "Can't Delete", data.message, "error");
                         } else {
-                            Swal.fire(
-                                "Error",
-                                "Unexpected response from server",
-                                "error",
-                            );
+                            Swal.fire(t.error_title || "Error", t.unexpected || "Unexpected response from server", "error");
                         }
                     })
                     .catch(function (err) {
                         console.error(err);
-                        Swal.fire(
-                            "Error",
-                            "An unexpected error occurred",
-                            "error",
-                        );
+                        Swal.fire(t.error_title || "Error", t.ajax_error || "An unexpected error occurred", "error");
                     });
             });
         },

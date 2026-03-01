@@ -81,13 +81,21 @@
                 sSortDescending: @json(__('messages.dt_aria_sort_desc')),
             },
         },
+        swal: {
+            delete_title:  @json(__('messages.swal_delete_title')),
+            delete_text:   @json(__('messages.swal_delete_text')),
+            confirm_btn:   @json(__('messages.swal_confirm_btn')),
+            cancel_btn:    @json(__('messages.swal_cancel_btn')),
+            deleted_title: @json(__('messages.swal_deleted_title')),
+            error_title:   @json(__('messages.swal_error_title')),
+            cant_delete:   @json(__('messages.swal_cant_delete')),
+            unexpected:    @json(__('messages.swal_unexpected')),
+            ajax_error:    @json(__('messages.swal_ajax_error')),
+        },
     };
 </script>
 <script defer src="{{asset('js/bundle.js')}}"></script>
 @vite('resources/js/global-admin.js')
 @stack('scripts')
-
-
-
 </body>
 </html>

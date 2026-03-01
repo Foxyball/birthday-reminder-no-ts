@@ -44,4 +44,15 @@ return [
     'dt_paginate_last' => 'Последна',
     'dt_aria_sort_asc' => ': активирай за сортиране във възходящ ред',
     'dt_aria_sort_desc' => ': активирай за сортиране в низходящ ред',
+
+    // SweetAlert delete confirmation
+    'swal_delete_title' => 'Сигурни ли сте?',
+    'swal_delete_text' => 'Няма да можете да върнете това действие!',
+    'swal_confirm_btn' => 'Да, изтрий!',
+    'swal_cancel_btn' => 'Отказ',
+    'swal_deleted_title' => 'Изтрито!',
+    'swal_error_title' => 'Грешка',
+    'swal_cant_delete' => 'Не може да се изтрие',
+    'swal_unexpected' => 'Неочакван отговор от сървъра',
+    'swal_ajax_error' => 'Възникна неочаквана грешка',
 ];
