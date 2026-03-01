@@ -181,19 +181,24 @@
                 <!-- Dark Mode Toggler -->
 
                 <!-- Language Toggle Dropdown -->
-                <div class="relative">
+                <div
+                    class="relative"
+                    x-data="{ dropdownOpen: false }"
+                    @click.outside="dropdownOpen = false"
+                >
                     <button
                         class="hover:text-dark-900 flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-                        id="langDropdownBtn">
-                        <span class="ml-2 text-xs font-semibold">{{ strtoupper(app()->getLocale()) }}</span>
+                        @click.prevent="dropdownOpen = !dropdownOpen">
+                        <span class="text-xs font-semibold">{{ strtoupper(app()->getLocale()) }}</span>
                     </button>
                     <div
-                        class="hidden absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 dark:bg-gray-900 z-50"
-                        id="langDropdownMenu">
+                        x-show="dropdownOpen"
+                        class="absolute right-0 mt-2 w-32 rounded-xl border border-gray-200 bg-white shadow-lg dark:border-gray-800 dark:bg-gray-900 z-50"
+                    >
                         <a href="{{ route('lang.switch', 'bg') }}"
-                           class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 {{ app()->getLocale() == 'bg' ? 'font-bold' : '' }}">Български</a>
+                           class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-t-xl {{ app()->getLocale() == 'bg' ? 'font-bold' : '' }}">Български</a>
                         <a href="{{ route('lang.switch', 'en') }}"
-                           class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 {{ app()->getLocale() == 'en' ? 'font-bold' : '' }}">English</a>
+                           class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-b-xl {{ app()->getLocale() == 'en' ? 'font-bold' : '' }}">English</a>
                     </div>
                 </div>
                 <!-- Language Toggle Dropdown -->
