@@ -208,7 +208,50 @@ function handleDeleteDelegation() {
     );
 }
 
+function handleDataTableAlpineReinit() {
+    if (!window.jQuery) return;
+
+    $(document).on("draw.dt", ".dataTable", function () {
+        if (window.Alpine) {
+            Alpine.initTree(this);
+        }
+    });
+}
+
+function handleStatusToggle() {
+    if (!window.jQuery) return;
+
+    $("body").on("change", ".change-status", function () {
+        const isChecked = $(this).is(":checked");
+        const id = $(this).data("id");
+        const url = $(this).closest("[data-status-url]").data("status-url");
+
+        if (!url) return;
+
+        $.ajax({
+            url: url,
+            method: "PUT",
+            data: { status: isChecked, id: id },
+            success: function (data) {
+                showToast("success", data.message);
+            },
+            error: function (xhr) {
+                showToast("error", xhr.status + ": " + xhr.statusText);
+            },
+        });
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     setupAjaxCsrf();
     handleDeleteDelegation();
+    handleDataTableAlpineReinit();
 });
+
+if (window.jQuery) {
+    $(function () {
+        handleStatusToggle();
+    });
+} else {
+    document.addEventListener("DOMContentLoaded", handleStatusToggle);
+}

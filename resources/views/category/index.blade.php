@@ -16,7 +16,7 @@
                 </a>
             </div>
             <div class="p-6 overflow-x-auto">
-                {{ $dataTable->table(['class' => 'w-full text-sm text-left text-gray-700 dark:text-gray-300']) }}
+                {{ $dataTable->table(['class' => 'w-full text-sm text-left text-gray-700 dark:text-gray-300', 'data-status-url' => route('admin.category.change-status')]) }}
             </div>
         </div>
     </div>
@@ -24,35 +24,4 @@
 
 @push('scripts')
     {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
-
-    <script>
-        document.addEventListener('alpine:init', function () {});
-
-        $(document).ready(function() {
-            $('#category-table').on('draw.dt', function () {
-                Alpine.initTree(document.getElementById('category-table'));
-            });
-
-            $('body').on('change', '.change-status', function() {
-                let isChecked = $(this).is(':checked');
-                let id = $(this).data('id');
-
-                $.ajax({
-                    url: "{{ route('admin.category.change-status') }}",
-                    method: 'PUT',
-                    data: {
-                        status: isChecked,
-                        id: id
-                    },
-                    success: function(data) {
-                        showToast('success', data.message);
-                    },
-                    error: function(xhr, status, error) {
-                        let errorMessage = xhr.status + ': ' + xhr.statusText;
-                        showToast('error', errorMessage);
-                    }
-                });
-            });
-        });
-    </script>
 @endpush

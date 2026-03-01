@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\CategoryDataTable;
-use App\Helpers\Toastr;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -61,17 +60,22 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Category $category)
     {
-        //
+        return view('category.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreCategoryRequest $request, Category $category)
     {
-        //
+        $data = $request->validated();
+        $data['slug'] = Str::slug($data['name']);
+
+        $category->update($data);
+
+        return redirect()->route('category.index')->with('status', __(self::UPDATE_MESSAGE));
     }
 
     /**
@@ -89,7 +93,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($request->id);
 
-        $category->status = $request->status == "true" ? 1 : 0;
+        $category->status = $request->status == 'true' ? 1 : 0;
 
         $category->save();
 
