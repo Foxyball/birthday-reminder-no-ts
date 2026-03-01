@@ -29,6 +29,7 @@ return [
     'category_delete_message' => 'Category deleted successfully.',
     'category_status_update_message' => 'Category status updated successfully.',
     'category_relation_error_message' => 'Category cannot be deleted because it has related records.',
+    'category_slug_unique' => 'A category with a similar name already exists.',
 
     // DataTables UI
     'dt_processing' => 'Processing...',

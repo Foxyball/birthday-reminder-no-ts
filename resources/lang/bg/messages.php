@@ -29,6 +29,7 @@ return [
     'category_delete_message' => 'Категорията е изтрита успешно.',
     'category_status_update_message' => 'Статусът на категорията е актуализиран успешно.',
     'category_relation_error_message' => 'Категорията не може да бъде изтрита, защото има свързани записи.',
+    'category_slug_unique' => 'Вече съществува категория с подобно име.',
 
     // DataTables UI
     'dt_processing' => 'Обработка...',

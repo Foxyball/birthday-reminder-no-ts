@@ -56,6 +56,8 @@ Place `data-status-url` on the wrapping `<table>` element (passed via `$dataTabl
 { "status": "success", "message": "..." }
 ```
 
+On AJAX failure the handler automatically reverts the checkbox `checked` state **and** the Alpine `switcherToggle` back to the previous value, keeping the UI in sync with the persisted status without a full reload.
+
 ```php
 // index.blade.php
 {{ $dataTable->table([
