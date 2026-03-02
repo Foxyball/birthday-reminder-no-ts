@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -27,11 +28,15 @@ Route::get('/lang/{locale}', function (string $locale) {
 })->name('lang.switch');
 
 Route::middleware(['auth', 'admin'])->group(function () {
-
-    // PRIORITY 1
     Route::put('/bgc/category/change-status', [CategoryController::class, 'changeStatus'])->name('admin.category.change-status');
-
     Route::resource('/bgc/category', CategoryController::class);
 });
 
-require __DIR__.'/auth.php';
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::patch('/bgc/users/{user}/toggle-lock', [UserController::class, 'toggleLock'])
+        ->name('admin.users.toggle-lock');
+    Route::resource('/bgc/users', UserController::class)
+        ->except(['destroy', 'show']);
+});
+
+require __DIR__ . '/auth.php';
