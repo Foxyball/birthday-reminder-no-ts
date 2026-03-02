@@ -56,4 +56,10 @@ return [
     'swal_cant_delete' => 'Не може да се изтрие',
     'swal_unexpected' => 'Неочакван отговор от сървъра',
     'swal_ajax_error' => 'Възникна неочаквана грешка',
+
+    // User flash messages
+    'user_success_message' => 'Потребителят е създаден успешно.',
+    'user_update_message' => 'Потребителят е актуализиран успешно.',
+    'user_delete_message' => 'Потребителят е изтрит успешно.',
+    'user_lock_status_update_message' => 'Статусът на заключване на потребителя е актуализиран успешно.',
 ];

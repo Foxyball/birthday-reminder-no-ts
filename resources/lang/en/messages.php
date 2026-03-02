@@ -56,4 +56,10 @@ return [
     'swal_cant_delete' => 'Cannot Delete',
     'swal_unexpected' => 'Unexpected response from server',
     'swal_ajax_error' => 'An unexpected error occurred',
+
+    // User flash messages
+    'user_success_message' => 'User created successfully.',
+    'user_update_message' => 'User updated successfully.',
+    'user_delete_message' => 'User deleted successfully.',
+    'user_lock_status_update_message' => 'User lock status updated successfully.',
 ];

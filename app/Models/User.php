@@ -49,9 +49,31 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Delete all contacts when user is deleted
+        static::deleting(function (User $user) {
+            $user->contacts()->each(function (Contact $contact) {
+                $contact->delete();
+            });
+        });
+    }
+
     // check if user is admin
     public function isAdmin(): bool
     {
         return $this->role === '1';
+    }
+
+    public function isLocked(): bool
+    {
+        return $this->is_locked;
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
     }
 }
