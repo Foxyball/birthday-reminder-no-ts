@@ -140,20 +140,13 @@
                 </div>
             </div>
         </div>
-        <!-- Optionally, add a right-side illustration or info panel as in login -->
-        <div class="relative items-center hidden w-full h-full bg-brand-950 dark:bg-white/5 lg:grid lg:w-1/2">
-            <div class="flex items-center justify-center z-1">
-                <div class="absolute right-0 top-0 -z-1 w-full max-w-[250px] xl:max-w-[450px]">
-                    <img src="{{ asset('src/images/shape/grid-01.svg') }}" alt="grid"/>
-                </div>
-                <div class="absolute bottom-0 left-0 -z-1 w-full max-w-[250px] rotate-180 xl:max-w-[450px]">
-                    <img src="{{ asset('src/images/shape/grid-01.svg') }}" alt="grid"/>
-                </div>
-                <div class="flex flex-col items-center max-w-xs">
-                    <a href="/" class="block mb-4">
-                        <img src="{{ asset('src/images/logo/auth-logo.svg') }}" alt="Logo"/>
-                    </a>
-                    <p class="text-center text-gray-400 dark:text-white/60">
+        <div class="relative items-center hidden w-full h-full lg:grid lg:w-1/2"
+             style="background-image: url('{{ asset('images/auth-logo.png') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div class="absolute inset-0 bg-brand-950/60 dark:bg-black/40"></div>
+            <div class="relative z-10 flex items-center justify-center h-full">
+                <div class="flex flex-col items-center max-w-xs px-6 text-center">
+                    <a href="/" class="mb-4 sr-only">Home</a>
+                    <p class="text-center text-gray-100 dark:text-white/90">
                         {{ __('Free and Open-Source Tailwind CSS Admin Dashboard Template') }}
                     </p>
                 </div>
