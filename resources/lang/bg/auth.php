@@ -13,9 +13,9 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'locked' => 'Your account is locked. Please contact an administrator.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'Тези данни не съвпадат с нашите записи.',
+    'locked' => 'Вашият акаунт е заключен. Моля, свържете се с администратор.',
+    'password' => 'Въведената парола е невалидна.',
+    'throttle' => 'Твърде много опити за вход. Моля, опитайте отново след :seconds секунди.',
 
 ];
