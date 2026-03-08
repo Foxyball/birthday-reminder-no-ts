@@ -13,6 +13,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/cashier (CASHIER) - v16
 - laravel/framework (LARAVEL) - v12
 - laravel/prompts (PROMPTS) - v0
+- laravel/socialite (SOCIALITE) - v5
 - livewire/livewire (LIVEWIRE) - v4
 - laravel/breeze (BREEZE) - v2
 - laravel/mcp (MCP) - v0
@@ -106,7 +107,7 @@ This project has domain-specific skills available. You MUST activate the relevan
 ## Constructors
 
 - Use PHP 8 constructor property promotion in `__construct()`.
-    - <code-snippet>public function \_\_construct(public GitHub $github) { }</code-snippet>
+    - <code-snippet>public function __construct(public GitHub $github) { }</code-snippet>
 - Do not allow empty `__construct()` methods with zero parameters unless the constructor is private.
 
 ## Type Declarations
@@ -253,4 +254,4 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - Always use existing Tailwind conventions; check project patterns before adding new ones.
 - IMPORTANT: Always use `search-docs` tool for version-specific Tailwind CSS documentation and updated code examples. Never rely on training data.
 - IMPORTANT: Activate `tailwindcss-development` every time you're working with a Tailwind CSS or styling-related task.
-  </laravel-boost-guidelines>
+</laravel-boost-guidelines>
