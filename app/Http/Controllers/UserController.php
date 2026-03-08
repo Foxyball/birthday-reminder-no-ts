@@ -6,7 +6,7 @@ use App\DataTables\UserDataTable;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -17,7 +17,6 @@ class UserController extends Controller
     const DELETE_MESSAGE = 'messages.user_delete_message';
 
     const LOCK_STATUS_UPDATE_MESSAGE = 'messages.user_lock_status_update_message';
-
 
     public function index(UserDataTable $dataTable)
     {
@@ -33,35 +32,46 @@ class UserController extends Controller
     {
         User::create($request->validated());
 
-        return redirect()->route('user.index')->with('status', __(self::SUCCESS_MESSAGE));
+        return redirect()->route('users.index')->with('status', __(self::SUCCESS_MESSAGE));
     }
 
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        $user = User::findOrFail($id);
-
         return view('user.edit', compact('user'));
     }
 
-    public function update(StoreUserRequest $request, string $id)
+    public function update(StoreUserRequest $request, User $user)
     {
-        $user = User::findOrFail($id);
         $user->update($request->validated());
 
-        return redirect()->route('user.index')->with('status', __(self::UPDATE_MESSAGE));
+        return redirect()->route('users.index')->with('status', __(self::UPDATE_MESSAGE));
     }
 
-    public function toggleLock(string $id)
+    public function destroy(string $id)
     {
         $user = User::findOrFail($id);
+
+        if ((int) $user->id === (int) Auth::id()) {
+            return response(['status' => 'error', 'message' => 'You cannot delete your own account.'], 422);
+        }
+
+        $user->delete();
+
+        return response(['status' => 'success', 'message' => __(self::DELETE_MESSAGE)]);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $user = User::findOrFail($request->id);
+
+        if ((int) $user->id === (int) Auth::id()) {
+            return response(['status' => 'error', 'message' => 'You cannot change your own lock status.'], 422);
+        }
+
         $user->update([
-            'is_locked' => !$user->is_locked,
+            'is_locked' => $request->status == 'true' ? 1 : 0,
         ]);
 
-        return response()->json([
-            'success' => true,
-            'is_locked' => $user->is_locked,
-            'message' => $user->is_locked ? __('messages.user_locked_message') : __('messages.user_unlocked_message'),
-        ]);
+        return response(['status' => 'success', 'message' => __(self::LOCK_STATUS_UPDATE_MESSAGE)]);
     }
 }

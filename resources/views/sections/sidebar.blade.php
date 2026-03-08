@@ -142,7 +142,7 @@
 
                         <li>
                             <a
-                                href="#"
+                                href="{{ route('users.index') }}"
                                 class="menu-item group {{ SidebarHelper::setActive(['users.*']) }}"
                             >
                                 <svg

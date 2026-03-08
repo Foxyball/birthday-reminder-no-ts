@@ -3,8 +3,8 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -33,10 +33,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::patch('/bgc/users/{user}/toggle-lock', [UserController::class, 'toggleLock'])
-        ->name('admin.users.toggle-lock');
+    Route::put('/bgc/users/change-status', [UserController::class, 'changeStatus'])
+        ->name('admin.users.change-status');
     Route::resource('/bgc/users', UserController::class)
-        ->except(['destroy', 'show']);
+        ->except(['show']);
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
