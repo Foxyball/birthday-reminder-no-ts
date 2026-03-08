@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,11 +28,19 @@ Route::get('/lang/{locale}', function (string $locale) {
 })->name('lang.switch');
 
 Route::middleware(['auth', 'admin'])->group(function () {
-
-    // PRIORITY 1
     Route::put('/bgc/category/change-status', [CategoryController::class, 'changeStatus'])->name('admin.category.change-status');
-
     Route::resource('/bgc/category', CategoryController::class);
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::put('/bgc/users/change-status', [UserController::class, 'changeStatus'])
+        ->name('admin.users.change-status');
+    Route::get('/bgc/users/deactivated', [UserController::class, 'deactivated'])
+        ->name('users.deactivated');
+    Route::patch('/bgc/users/{id}/restore', [UserController::class, 'restore'])
+        ->name('users.restore');
+    Route::resource('/bgc/users', UserController::class)
+        ->except(['show']);
 });
 
 require __DIR__.'/auth.php';

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
@@ -11,7 +12,7 @@ use Laravel\Cashier\Billable;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use Billable, HasFactory, Notifiable;
+    use Billable, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -45,13 +46,40 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
+            'is_locked' => 'boolean',
             'password' => 'hashed',
+            'deleted_at' => 'datetime',
         ];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function (User $user) {
+            if (! $user->isForceDeleting()) {
+                return;
+            }
+
+            $user->contacts()->each(function (Contact $contact) {
+                $contact->delete();
+            });
+        });
     }
 
     // check if user is admin
     public function isAdmin(): bool
     {
         return $this->role === '1';
+    }
+
+    public function isLocked(): bool
+    {
+        return $this->is_locked;
+    }
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
     }
 }
