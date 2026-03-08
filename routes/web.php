@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SocialAuthLoginController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,5 +43,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('/bgc/users', UserController::class)
         ->except(['show']);
 });
+
+// Socialite routes
+Route::get('/auth/google/redirect', [SocialAuthLoginController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/auth/google/callback', [SocialAuthLoginController::class, 'handleGoogleCallback'])->name('google.callback');
 
 require __DIR__.'/auth.php';
