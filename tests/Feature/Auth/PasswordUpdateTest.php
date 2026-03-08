@@ -38,3 +38,23 @@ test('correct password must be provided to update password', function () {
         ->assertSessionHasErrorsIn('updatePassword', 'current_password')
         ->assertRedirect('/profile');
 });
+
+test('social login users can set a password without providing a current password', function () {
+    $user = User::factory()->create([
+        'password' => null,
+    ]);
+
+    $response = $this
+        ->actingAs($user)
+        ->from('/profile')
+        ->put('/password', [
+            'password' => 'new-password',
+            'password_confirmation' => 'new-password',
+        ]);
+
+    $response
+        ->assertSessionHasNoErrors()
+        ->assertRedirect('/profile');
+
+    $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
+});

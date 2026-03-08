@@ -1,3 +1,12 @@
+@php
+    $statusMessage = match (session('status')) {
+        'profile-updated' => 'Profile updated successfully.',
+        'password-updated' => 'Password updated successfully.',
+        'verification-link-sent' => 'A new verification link has been sent to your email address.',
+        default => session('status'),
+    };
+@endphp
+
 @if(session('status'))
     <div
         x-data="{ show: true }"
@@ -16,7 +25,7 @@
                 </svg>
             </div>
             <div class="flex-1">
-                <p class="text-sm font-medium" style="color: #14532d;">{{ session('status') }}</p>
+                <p class="text-sm font-medium" style="color: #14532d;">{{ $statusMessage }}</p>
             </div>
             <button @click="show = false" class="shrink-0" style="color: #16a34a;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
