@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\DeactivatedUserDataTable;
 use App\DataTables\UserDataTable;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
@@ -16,11 +17,18 @@ class UserController extends Controller
 
     const DELETE_MESSAGE = 'messages.user_delete_message';
 
+    const RESTORE_MESSAGE = 'messages.user_restore_message';
+
     const LOCK_STATUS_UPDATE_MESSAGE = 'messages.user_lock_status_update_message';
 
     public function index(UserDataTable $dataTable)
     {
         return $dataTable->render('user.index');
+    }
+
+    public function deactivated(DeactivatedUserDataTable $dataTable)
+    {
+        return $dataTable->render('user.deactivated');
     }
 
     public function create()
@@ -73,5 +81,13 @@ class UserController extends Controller
         ]);
 
         return response(['status' => 'success', 'message' => __(self::LOCK_STATUS_UPDATE_MESSAGE)]);
+    }
+
+    public function restore(string $id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+
+        return redirect()->route('users.deactivated')->with('status', __(self::RESTORE_MESSAGE));
     }
 }

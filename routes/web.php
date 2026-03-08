@@ -35,6 +35,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/bgc/users/change-status', [UserController::class, 'changeStatus'])
         ->name('admin.users.change-status');
+    Route::get('/bgc/users/deactivated', [UserController::class, 'deactivated'])
+        ->name('users.deactivated');
+    Route::patch('/bgc/users/{id}/restore', [UserController::class, 'restore'])
+        ->name('users.restore');
     Route::resource('/bgc/users', UserController::class)
         ->except(['show']);
 });

@@ -8,6 +8,7 @@ return [
     'create_new' => 'Create New',
     'create_user' => 'Create User',
     'edit_user' => 'Edit User',
+    'deactivated_users' => 'Deactivated Users',
 
     // Category
     'create_category' => 'Create Category',
@@ -22,6 +23,7 @@ return [
     'action' => 'Action',
     'edit' => 'Edit',
     'delete' => 'Delete',
+    'restore' => 'Restore',
     'save' => 'Save',
     'cancel' => 'Cancel',
     'admin' => 'Admin',
@@ -29,6 +31,7 @@ return [
     'active' => 'Active',
     'locked' => 'Locked',
     'inactive' => 'Inactive',
+    'deleted_at' => 'Deleted At',
 
     // Category flash messages
     'category_success_message' => 'Category created successfully.',
@@ -68,6 +71,7 @@ return [
     'user_success_message' => 'User created successfully.',
     'user_update_message' => 'User updated successfully.',
     'user_delete_message' => 'User deleted successfully.',
+    'user_restore_message' => 'User restored successfully.',
     'user_lock_status_update_message' => 'User lock status updated successfully.',
     'user_locked_message' => 'User locked successfully.',
     'user_unlocked_message' => 'User unlocked successfully.',

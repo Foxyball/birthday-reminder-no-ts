@@ -4,14 +4,13 @@ namespace App\DataTables;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class UserDataTable extends DataTable
+class DeactivatedUserDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -29,29 +28,18 @@ class UserDataTable extends DataTable
 
                 return '<span class="inline-flex rounded-full px-2.5 py-1 text-xs font-medium '.$classes.'">'.$label.'</span>';
             })
-            ->addColumn('status', function (User $user) {
-                $checked = $user->is_locked ? 'true' : 'false';
-                $checkedAttr = $user->is_locked ? 'checked' : '';
-
-                return '<div x-data="{ switcherToggle: '.$checked.' }">
-                    <label class="flex cursor-pointer select-none items-center">
-                        <div class="relative">
-                            <input type="checkbox" '.$checkedAttr.' data-id="'.$user->id.'" class="sr-only change-status" @change="switcherToggle = !switcherToggle">
-                            <div class="block h-6 w-11 rounded-full transition-colors" :class="switcherToggle ? \'bg-error-500\' : \'bg-success-500\'"></div>
-                            <div class="shadow-theme-sm absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white duration-300 ease-linear" :class="switcherToggle ? \'translate-x-full\' : \'translate-x-0\'"></div>
-                        </div>
-                    </label>
-                </div>';
+            ->editColumn('deleted_at', function (User $user) {
+                return $user->deleted_at?->format('d.m.Y');
             })
             ->addColumn('action', function (User $user) {
-                $edit = '<a href="'.route('users.edit', $user).'" class="inline-flex items-center rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-brand-600">'.
-                    __('messages.edit').'</a>';
-                $delete = '<a href="'.route('users.destroy', $user).'" class="ml-2 inline-flex items-center rounded-lg bg-error-500 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-error-600 delete-item">'.
-                    __('messages.delete').'</a>';
-
-                return $edit.' '.$delete;
+                return '<form action="'.route('users.restore', $user->id).'" method="POST" class="inline-block">'
+                    .csrf_field()
+                    .method_field('PATCH')
+                    .'<button type="submit" class="inline-flex items-center rounded-lg bg-success-500 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-success-600">'
+                        .'Restore'.
+                    '</button></form>';
             })
-            ->rawColumns(['role', 'status', 'action'])
+            ->rawColumns(['role', 'action'])
             ->setRowId('id');
     }
 
@@ -62,13 +50,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        $query = $model->newQuery()->select(['id', 'email', 'name', 'role', 'is_locked']);
-
-        if (Auth::check()) {
-            $query->where('id', '!=', Auth::id());
-        }
-
-        return $query;
+        return $model->onlyTrashed()->select(['id', 'email', 'name', 'role', 'deleted_at']);
     }
 
     /**
@@ -77,7 +59,7 @@ class UserDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('user-table')
+            ->setTableId('deactivated-user-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->orderBy(0)
@@ -102,11 +84,11 @@ class UserDataTable extends DataTable
             Column::make('email')->title('Email'),
             Column::make('name')->title(__('messages.name')),
             Column::make('role')->title('Role'),
-            Column::computed('status')->title(__('messages.status')),
+            Column::make('deleted_at')->title('Deleted At'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(180)
+                ->width(120)
                 ->addClass('text-center')
                 ->title(__('messages.action')),
         ];
@@ -117,6 +99,6 @@ class UserDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'User_'.date('d.m.Y');
+        return 'Deactivated_Users_'.date('d.m.Y');
     }
 }

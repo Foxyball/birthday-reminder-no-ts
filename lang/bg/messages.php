@@ -8,6 +8,7 @@ return [
     'create_new' => 'Създай нов',
     'create_user' => 'Създай потребител',
     'edit_user' => 'Редактирай потребител',
+    'deactivated_users' => 'Деактивирани потребители',
 
     // Category
     'create_category' => 'Създай категория',
@@ -22,6 +23,7 @@ return [
     'action' => 'Действие',
     'edit' => 'Редактирай',
     'delete' => 'Изтрий',
+    'restore' => 'Възстанови',
     'save' => 'Запази',
     'cancel' => 'Откажи',
     'admin' => 'Администратор',
@@ -29,6 +31,7 @@ return [
     'active' => 'Активен',
     'locked' => 'Заключен',
     'inactive' => 'Неактивен',
+    'deleted_at' => 'Изтрит на',
 
     // Category flash messages
     'category_success_message' => 'Категорията е създадена успешно.',
@@ -68,6 +71,7 @@ return [
     'user_success_message' => 'Потребителят е създаден успешно.',
     'user_update_message' => 'Потребителят е актуализиран успешно.',
     'user_delete_message' => 'Потребителят е изтрит успешно.',
+    'user_restore_message' => 'Потребителят е възстановен успешно.',
     'user_lock_status_update_message' => 'Статусът на заключване на потребителя е актуализиран успешно.',
     'user_locked_message' => 'Потребителят е заключен успешно.',
     'user_unlocked_message' => 'Потребителят е отключен успешно.',
