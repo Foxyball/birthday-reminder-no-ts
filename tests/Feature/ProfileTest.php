@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 test('profile page is displayed', function () {
     $user = User::factory()->create();
@@ -64,7 +65,12 @@ test('user can delete their account', function () {
         ->assertRedirect('/');
 
     $this->assertGuest();
-    $this->assertNull($user->fresh());
+
+    if (in_array(SoftDeletes::class, class_uses_recursive(User::class), true)) {
+        $this->assertSoftDeleted('users', ['id' => $user->id]);
+    } else {
+        $this->assertNull($user->fresh());
+    }
 });
 
 test('correct password must be provided to delete account', function () {
