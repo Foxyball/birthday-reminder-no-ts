@@ -1,8 +1,8 @@
 @php
     $statusMessage = match (session('status')) {
-        'profile-updated' => 'Profile updated successfully.',
-        'password-updated' => 'Password updated successfully.',
-        'verification-link-sent' => 'A new verification link has been sent to your email address.',
+        'profile-updated' => __('messages.profile_updated_successfully'),
+        'password-updated' => __('messages.password_updated_successfully'),
+        'verification-link-sent' => __('messages.profile_verification_link_sent'),
         default => session('status'),
     };
 @endphp
