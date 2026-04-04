@@ -122,7 +122,13 @@
 
                 if (data.status === 'success') {
                     showToast('success', data.message);
-                    closeImportModal();
+                    // Reset form before closing
+                    importForm.reset();
+                    document.getElementById('fileName').textContent = '';
+                    // Close modal after a brief delay to show toast
+                    setTimeout(() => {
+                        closeImportModal();
+                    }, 500);
                     // Reload contacts table if exists
                     if (window.contactsTable) {
                         window.contactsTable.ajax.reload(null, false);

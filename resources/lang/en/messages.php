@@ -199,4 +199,11 @@ return [
     'import_csv_birthday' => 'Birthday',
     'import_csv_category' => 'Category',
     'importing' => 'Importing',
+    'import_details_description' => 'View import details',
+    'imported' => 'Imported',
+    'errors' => 'Errors',
+    'file_name' => 'File Name',
+    'import_errors' => 'Import Errors',
+    'import_no_errors' => 'No errors - all contacts imported successfully!',
+    'back' => 'Back to Dashboard',
 ];

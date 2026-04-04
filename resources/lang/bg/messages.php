@@ -198,4 +198,11 @@ return [
     'import_csv_birthday' => 'Рожден ден',
     'import_csv_category' => 'Категория',
     'importing' => 'Импортирам',
+    'import_details_description' => 'Преглед',
+    'imported' => 'Импортирани',
+    'errors' => 'Грешки',
+    'file_name' => 'Име на файл',
+    'import_errors' => 'Грешки при импортиране',
+    'import_no_errors' => 'Без грешки - всички контакти са импортирани успешно!',
+    'back' => 'Обратно към информационния панел',
 ];

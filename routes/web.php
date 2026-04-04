@@ -40,6 +40,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/bgc/import/{import}/details', [ImportController::class, 'details'])->name('admin.import.details');
     Route::get('/bgc/import', [ImportController::class, 'show'])->name('admin.import.show');
     Route::post('/bgc/import', [ImportController::class, 'store'])->name('admin.import.store');
     Route::get('/bgc/import/template', [ImportController::class, 'template'])->name('admin.import.template');

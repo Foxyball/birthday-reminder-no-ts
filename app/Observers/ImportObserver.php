@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Import;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Log;
 
 class ImportObserver
@@ -20,6 +21,21 @@ class ImportObserver
             'error_count' => $import->error_count,
             'file_name' => $import->file_name,
         ]);
+
+        $title = __('messages.import_contacts');
+        $message = 'Imported ' . $import->imported_count . ' contacts';
+        
+        if ($import->error_count > 0) {
+            $message .= ' with ' . $import->error_count . ' errors';
+        }
+
+        Notification::createInfoNotification(
+            $import->user_id,
+            $title,
+            $import,
+            $message,
+            route('admin.import.details', $import->id)
+        );
     }
 
     /**
