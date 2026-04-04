@@ -101,4 +101,14 @@ return [
     'current_password_placeholder' => 'Enter your current password',
     'profile_updated_successfully' => 'Profile updated successfully.',
     'password_updated_successfully' => 'Password updated successfully.',
+
+    // Mail
+    'birthday_reminder' => 'Birthday Reminder',
+    'birthday_reminder_subject' => 'Birthday Reminder: You have :count contact(s) with birthdays today',
+    'mail_greeting' => 'Hello :name,',
+    'mail_birthday_today' => 'The following contact(s) have a birthday today (:date):',
+    'date' => 'Date',
+    'age' => 'Age',
+    'mail_closing' => 'Have a great day!',
+    'mail_footer' => 'This is an automated email, do not reply.',
 ];

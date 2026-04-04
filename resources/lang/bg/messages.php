@@ -147,4 +147,14 @@ return [
     'observer_user_updated_message' => 'Данните на потребителя са актуализирани.',
     'observer_contact_added' => 'Контакт добавен: :name',
     'observer_contact_added_message' => 'Успешно добавихте нов контакт.',
+
+    // Mail
+    'birthday_reminder' => 'Напомняне за рожден ден ден',
+    'birthday_reminder_subject' => 'Напомняне за рожден ден ден: Имате :count контакт/и с рожден ден днес',
+    'mail_greeting' => 'Здравей :name,',
+    'mail_birthday_today' => 'Следния контакт/и имат рожден ден днес (:date):',
+    'date' => 'Дата',
+    'age' => 'Възраст',
+    'mail_closing' => 'Имайте чудесен ден!',
+    'mail_footer' => 'Това е автоматичен имейл, не отговаряйте.',
 ];

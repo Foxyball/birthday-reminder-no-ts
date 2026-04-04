@@ -148,4 +148,14 @@ return [
     'observer_user_updated_message' => 'User details have been updated.',
     'observer_contact_added' => 'Contact added: :name',
     'observer_contact_added_message' => 'You\'ve successfully added a new contact.',
+
+    // Mail
+    'birthday_reminder' => 'Birthday Reminder',
+    'birthday_reminder_subject' => 'Birthday Reminder: You have :count contact(s) with birthdays today',
+    'mail_greeting' => 'Hello :name,',
+    'mail_birthday_today' => 'The following contact(s) have a birthday today (:date):',
+    'date' => 'Date',
+    'age' => 'Age',
+    'mail_closing' => 'Have a great day!',
+    'mail_footer' => 'This is an automated email, do not reply.',
 ];

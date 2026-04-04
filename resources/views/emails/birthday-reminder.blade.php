@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Birthday Reminder</title>
+    <title>{{ __('messages.birthday_reminder') }}</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Arial, sans-serif; background: #f6f7f9; color: #111827; }
         .container { max-width: 640px; margin: 24px auto; background: #ffffff; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); overflow: hidden; }
@@ -17,22 +17,28 @@
         td { font-size: 14px; }
         .footer { padding: 16px 24px; font-size: 12px; color: #6b7280; background: #f9fafb; }
     </style>
-    </head>
+    <!--[if mso]>
+    <style>
+        table { border-collapse: collapse; }
+        .container { width: 640px; }
+    </style>
+    <![endif]-->
+</head>
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="title">Birthday Reminder</h1>
+            <h1 class="title">{{ __('messages.birthday_reminder') }}</h1>
         </div>
         <div class="content">
-            <p class="lead">Hello {{ $user->name ?? 'there' }},</p>
-            <p class="lead">The following contact(s) have a birthday today ({{ $today->toFormattedDateString() }}):</p>
+            <p class="lead">{{ __('messages.mail_greeting', ['name' => $user->name ?? 'there']) }}</p>
+            <p class="lead">{{ __('messages.mail_birthday_today', ['date' => $today->toFormattedDateString()]) }}</p>
 
             <table role="table" aria-label="Birthdays">
                 <thead>
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Age</th>
+                        <th scope="col">{{ __('messages.name') }}</th>
+                        <th scope="col">{{ __('messages.date') }}</th>
+                        <th scope="col">{{ __('messages.age') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,8 +52,14 @@
                 </tbody>
             </table>
 
-            <p class="lead" style="margin-top: 16px;">Have a great day!</p>
+            <p class="lead" style="margin-top: 16px;">{{ __('messages.mail_closing') }}</p>
         </div>
+        <div class="footer">
+            <p>{{ __('messages.mail_footer') }}</p>
+        </div>
+    </div>
+</body>
+</html>
         <div class="footer">
             <p>This is an automated reminder from Birthday Reminder App.</p>
         </div>

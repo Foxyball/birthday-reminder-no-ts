@@ -101,4 +101,14 @@ return [
     'current_password_placeholder' => 'Въведете текущата си парола',
     'profile_updated_successfully' => 'Профилът беше актуализиран успешно.',
     'password_updated_successfully' => 'Паролата беше актуализирана успешно.',
+
+    // Mail
+    'birthday_reminder' => 'Напомняне за рожден ден',
+    'birthday_reminder_subject' => 'Напомняне за рожден ден ден: Имате :count контакт/и с рожден ден днес',
+    'mail_greeting' => 'Здравей :name,',
+    'mail_birthday_today' => 'Следния контакт/и имат рожден ден ден днес (:date):',
+    'date' => 'Дата',
+    'age' => 'Възраст',
+    'mail_closing' => 'Имайте чудесен ден!',
+    'mail_footer' => 'Това е автоматичен имейл, не отговаряйте.',
 ];
