@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
@@ -14,6 +15,9 @@ Route::get('/', function () {
 
 Route::get('/bgc/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/bgc/calendar', [CalendarController::class, 'index'])
+    ->middleware(['auth', 'verified'])->name('calendar.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

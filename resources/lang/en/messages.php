@@ -158,4 +158,19 @@ return [
     'age' => 'Age',
     'mail_closing' => 'Have a great day!',
     'mail_footer' => 'This is an automated email, do not reply.',
+
+    // Calendar
+    'birthday_calendar' => 'Birthday Calendar',
+    'prev_month' => 'Previous',
+    'next_month' => 'Next',
+    'today' => 'Today',
+    'day_sun' => 'Sunday',
+    'day_mon' => 'Monday',
+    'day_tue' => 'Tuesday',
+    'day_wed' => 'Wednesday',
+    'day_thu' => 'Thursday',
+    'day_fri' => 'Friday',
+    'day_sat' => 'Saturday',
+    'years_old' => 'years old',
+    'birthday_on_this_day' => 'Birthday on this day',
 ];

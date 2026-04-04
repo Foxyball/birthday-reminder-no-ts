@@ -9,7 +9,8 @@
     >
         <a href="{{ route('dashboard') }}">
       <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
-        <img class="dark:hidden" src="src/images/logo/logo.svg" alt="Logo"/>
+        {{-- <img class="dark:hidden" src="src/images/logo/logo.svg" alt="Logo"/> --}}
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white">BalikG Reminder</h3>
         <img
             class="hidden dark:block"
             src="src/images/logo/logo-dark.svg"
@@ -17,12 +18,6 @@
         />
       </span>
 
-            <img
-                class="logo-icon"
-                :class="sidebarToggle ? 'lg:block' : 'hidden'"
-                src="src/images/logo/logo-icon.svg"
-                alt="Logo"
-            />
         </a>
     </div>
     <!-- SIDEBAR HEADER -->
@@ -87,10 +82,10 @@
                         </a>
                     </li>
 
-                    {{-- TODO: Add calendar page--}}
+                    {{-- Calendar Page --}}
                     <li>
                         <a
-                            href="#"
+                            href="{{ route('calendar.index') }}"
                             class="menu-item group {{ SidebarHelper::setActive(['calendar']) }}"
                         >
                             <svg
@@ -108,8 +103,8 @@
                                 />
                             </svg>
                             <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-            Calendar
-        </span>
+                                {{ __('messages.birthday_calendar') }}
+                            </span>
                         </a>
                     </li>
 
