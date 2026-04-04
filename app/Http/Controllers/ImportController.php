@@ -13,12 +13,11 @@ use Illuminate\Support\Facades\Log;
  *
  * Handles the complete import workflow including displaying the import modal,
  * processing uploaded CSV files, and providing template download functionality.
- *
- * @package App\Http\Controllers
  */
 class ImportController extends Controller
 {
     const SUCCESS_MESSAGE = 'messages.import_success';
+
     const ERROR_MESSAGE = 'messages.import_error';
 
     private ImportService $importService;
@@ -44,15 +43,14 @@ class ImportController extends Controller
      * Validates the uploaded CSV file and delegates to ImportService for processing.
      * Returns JSON response with import results (count, errors) or validation errors.
      *
-     * @param ImportContactsRequest $request The import request with validated CSV file
-     *
+     * @param  ImportContactsRequest  $request  The import request with validated CSV file
      * @return \Illuminate\Http\JsonResponse With structure:
-     *                                        {
-     *                                            "status": "success|error",
-     *                                            "message": "...",
-     *                                            "count": int,
-     *                                            "errors": array
-     *                                        }
+     *                                       {
+     *                                       "status": "success|error",
+     *                                       "message": "...",
+     *                                       "count": int,
+     *                                       "errors": array
+     *                                       }
      */
     public function store(ImportContactsRequest $request)
     {

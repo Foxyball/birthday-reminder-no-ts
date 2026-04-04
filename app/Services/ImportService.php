@@ -23,8 +23,6 @@ use OpenSpout\Reader\CSV\Reader as CSVReader;
  * - Column 3: Phone (optional)
  * - Column 4: Birthday (required, format: DD/MM/YYYY or YYYY-MM-DD)
  * - Column 5: Category (optional, matched by name)
- *
- * @package App\Services
  */
 class ImportService
 {
@@ -39,19 +37,18 @@ class ImportService
      * Opens a CSV file using OpenSpout library and extracts all rows with their cell values.
      * The first row (header) is preserved and should be skipped during processing.
      *
-     * @param string $filePath Absolute path to the CSV file
-     *
+     * @param  string  $filePath  Absolute path to the CSV file
      * @return array<int, array<string, mixed>> Array of rows with structure:
-     *                                           [
-     *                                               'index' => int (1-based row number),
-     *                                               'cells' => array<string|null> (cell values)
-     *                                           ]
+     *                                          [
+     *                                          'index' => int (1-based row number),
+     *                                          'cells' => array<string|null> (cell values)
+     *                                          ]
      *
      * @throws \Exception On file reading or parsing errors
      */
     public function readCsvFile(string $filePath): array
     {
-        $reader = new CSVReader();
+        $reader = new CSVReader;
         $reader->open($filePath);
 
         $rows = [];
@@ -60,7 +57,7 @@ class ImportService
                 $cells = $row->getCells();
                 $rows[] = [
                     'index' => $rowIndex,
-                    'cells' => array_map(fn($cell) => $cell?->getValue(), $cells),
+                    'cells' => array_map(fn ($cell) => $cell?->getValue(), $cells),
                 ];
             }
         }
@@ -88,8 +85,8 @@ class ImportService
      *
      * @return array<string, mixed> Result array with structure:
      *                              [
-     *                                  'imported' => int (number of successfully created contacts),
-     *                                  'errors' => array<string> (validation/processing errors)
+     *                              'imported' => int (number of successfully created contacts),
+     *                              'errors' => array<string> (validation/processing errors)
      *                              ]
      *
      * Example return:
@@ -111,7 +108,7 @@ class ImportService
             // Log::error('CSV reading error: ' . $e->getMessage());
             return [
                 'imported' => 0,
-                'errors' => ['CSV file reading error: ' . $e->getMessage()],
+                'errors' => ['CSV file reading error: '.$e->getMessage()],
             ];
         }
 
@@ -137,13 +134,15 @@ class ImportService
             // Validate required fields
             if (empty($name) || empty($birthday)) {
                 $errors[] = __('messages.import_row_error', ['row' => $rowNumber]);
+
                 continue;
             }
 
             // Parse birthday
             $parsedBirthday = $this->parseBirthday($birthday);
-            if (!$parsedBirthday) {
+            if (! $parsedBirthday) {
                 $errors[] = __('messages.import_invalid_birthday', ['row' => $rowNumber]);
+
                 continue;
             }
 
@@ -186,8 +185,7 @@ class ImportService
      * - m/d/Y (01/15/1990)
      * - Y/m/d (1990/01/15)
      *
-     * @param mixed $birthday Birthday string or value to parse (null/empty returns null)
-     *
+     * @param  mixed  $birthday  Birthday string or value to parse (null/empty returns null)
      * @return DateTime|null Parsed DateTime object if valid format detected, null otherwise
      *
      * Example:
