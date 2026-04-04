@@ -166,3 +166,4 @@ return [
     'recent_contacts' => 'Recent Contacts',
     'created_at' => 'Created At',
     'no_contacts' => 'No contacts found',
+];
