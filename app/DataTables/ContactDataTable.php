@@ -23,9 +23,10 @@ class ContactDataTable extends DataTable
             ->addColumn('image', function ($query) {
                 if ($query->image) {
                     $imageUrl = \App\Helpers\ImageHelper::url($query->image);
+                    $escapedName = e($query->name);
 
                     return '<div class="flex items-center justify-center h-10 w-10 rounded-full overflow-hidden border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700">
-                        <img src="'.$imageUrl.'" alt="'.$query->name.'" class="h-full w-full object-cover">
+                        <img src="'.$imageUrl.'" alt="'.$escapedName.'" class="h-full w-full object-cover">
                     </div>';
                 } else {
                     $firstLetter = strtoupper(substr($query->name, 0, 1));
