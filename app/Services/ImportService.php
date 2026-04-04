@@ -21,8 +21,6 @@ use OpenSpout\Reader\CSV\Reader as CSVReader;
  * - Column 3: Phone (optional)
  * - Column 4: Birthday (required, format: DD/MM/YYYY or YYYY-MM-DD)
  * - Column 5: Category (optional, matched by name)
- *
- * @package App\Services
  */
 class ImportService
 {
@@ -32,19 +30,18 @@ class ImportService
      * Opens a CSV file using OpenSpout library and extracts all rows with their cell values.
      * The first row (header) is preserved and should be skipped during processing.
      *
-     * @param string $filePath Absolute path to the CSV file
-     *
+     * @param  string  $filePath  Absolute path to the CSV file
      * @return array<int, array<string, mixed>> Array of rows with structure:
-     *                                           [
-     *                                               'index' => int (1-based row number),
-     *                                               'cells' => array<string|null> (cell values)
-     *                                           ]
+     *                                          [
+     *                                          'index' => int (1-based row number),
+     *                                          'cells' => array<string|null> (cell values)
+     *                                          ]
      *
      * @throws \Exception On file reading or parsing errors
      */
     public function readCsvFile(string $filePath): array
     {
-        $reader = new CSVReader();
+        $reader = new CSVReader;
         $reader->open($filePath);
 
         $rows = [];
@@ -53,7 +50,7 @@ class ImportService
                 $cells = $row->getCells();
                 $rows[] = [
                     'index' => $rowIndex,
-                    'cells' => array_map(fn($cell) => $cell?->getValue(), $cells),
+                    'cells' => array_map(fn ($cell) => $cell?->getValue(), $cells),
                 ];
             }
         }
@@ -75,13 +72,12 @@ class ImportService
      * Errors are logged and collected without stopping the import process.
      * Successfully created contacts are returned along with any errors encountered.
      *
-     * @param string $filePath Absolute path to the CSV file to import
-     * @param int $userId The ID of the user importing contacts
-     *
+     * @param  string  $filePath  Absolute path to the CSV file to import
+     * @param  int  $userId  The ID of the user importing contacts
      * @return array<string, mixed> Result array with structure:
      *                              [
-     *                                  'imported' => int (number of successfully created contacts),
-     *                                  'errors' => array<string> (validation/processing errors)
+     *                              'imported' => int (number of successfully created contacts),
+     *                              'errors' => array<string> (validation/processing errors)
      *                              ]
      *
      * Example return:
@@ -100,10 +96,11 @@ class ImportService
         try {
             $rows = $this->readCsvFile($filePath);
         } catch (\Exception $e) {
-            Log::error('CSV reading error: ' . $e->getMessage());
+            Log::error('CSV reading error: '.$e->getMessage());
+
             return [
                 'imported' => 0,
-                'errors' => ['CSV file reading error: ' . $e->getMessage()],
+                'errors' => ['CSV file reading error: '.$e->getMessage()],
             ];
         }
 
@@ -129,32 +126,35 @@ class ImportService
             // Validate required fields
             if (empty($name) || empty($birthday)) {
                 $errors[] = __('messages.import_row_error', ['row' => $rowNumber]);
+
                 continue;
             }
 
             // Parse birthday
             $parsedBirthday = $this->parseBirthday($birthday);
-            if (!$parsedBirthday) {
+            if (! $parsedBirthday) {
                 $errors[] = __('messages.import_invalid_birthday', ['row' => $rowNumber]);
+
                 continue;
             }
 
             // Match category by name
             $categoryId = null;
-            if (!empty($categoryName)) {
+            if (! empty($categoryName)) {
                 $category = Category::where('name', trim($categoryName))
                     ->first();
                 $categoryId = $category?->id;
             }
 
             // Check for duplicate email (per user)
-            if (!empty($email)) {
+            if (! empty($email)) {
                 $existingContact = Contact::where('user_id', $userId)
                     ->where('email', trim($email))
                     ->exists();
 
                 if ($existingContact) {
                     $errors[] = __('messages.import_duplicate_email', ['row' => $rowNumber, 'email' => $email]);
+
                     continue;
                 }
             }
@@ -164,8 +164,8 @@ class ImportService
                 Contact::create([
                     'user_id' => $userId,
                     'name' => trim($name),
-                    'email' => !empty($email) ? trim($email) : null,
-                    'phone' => !empty($phone) ? trim($phone) : null,
+                    'email' => ! empty($email) ? trim($email) : null,
+                    'phone' => ! empty($phone) ? trim($phone) : null,
                     'birthday' => $parsedBirthday->format('Y-m-d'),
                     'category_id' => $categoryId,
                     'slug' => \Illuminate\Support\Str::slug(trim($name)),
@@ -173,7 +173,7 @@ class ImportService
 
                 $importedCount++;
             } catch (\Exception $e) {
-                Log::error('Contact creation error on row ' . $rowNumber . ': ' . $e->getMessage());
+                Log::error('Contact creation error on row '.$rowNumber.': '.$e->getMessage());
                 $errors[] = __('messages.import_row_error', ['row' => $rowNumber]);
             }
         }
@@ -198,8 +198,7 @@ class ImportService
      * - m/d/Y (01/15/1990)
      * - Y/m/d (1990/01/15)
      *
-     * @param mixed $birthday Birthday string or value to parse (null/empty returns null)
-     *
+     * @param  mixed  $birthday  Birthday string or value to parse (null/empty returns null)
      * @return DateTime|null Parsed DateTime object if valid format detected, null otherwise
      *
      * Example:
