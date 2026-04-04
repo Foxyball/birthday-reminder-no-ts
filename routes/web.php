@@ -4,6 +4,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialAuthLoginController;
 use App\Http\Controllers\UserController;
@@ -36,6 +37,13 @@ Route::get('/lang/{locale}', function (string $locale) {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/bgc/category/change-status', [CategoryController::class, 'changeStatus'])->name('admin.category.change-status');
     Route::resource('/bgc/category', CategoryController::class);
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/bgc/import/{import}/details', [ImportController::class, 'details'])->name('admin.import.details');
+    Route::get('/bgc/import', [ImportController::class, 'show'])->name('admin.import.show');
+    Route::post('/bgc/import', [ImportController::class, 'store'])->name('admin.import.store');
+    Route::get('/bgc/import/template', [ImportController::class, 'template'])->name('admin.import.template');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {

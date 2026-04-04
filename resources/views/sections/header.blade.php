@@ -251,6 +251,9 @@
                                             <span class="text-theme-sm mb-1.5 block text-gray-500 dark:text-gray-400" :class="!notification.read_at ? 'font-bold' : ''">
                                                 <span class="text-gray-800 dark:text-white/90" x-text="notification.title"></span>
                                             </span>
+                                            <template x-if="notification.message">
+                                                <span class="text-theme-xs mb-2 block text-gray-600 dark:text-gray-300" x-text="notification.message"></span>
+                                            </template>
                                             <span class="text-theme-xs flex items-center gap-2 text-gray-500 dark:text-gray-400">
                                                 <span x-text="timeAgo(notification.created_at)"></span>
                                             </span>
