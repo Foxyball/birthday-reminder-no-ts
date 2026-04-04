@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Models\Contact;
+use App\Models\Import;
 use DateTime;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use OpenSpout\Reader\CSV\Reader as CSVReader;
 
@@ -26,6 +28,11 @@ use OpenSpout\Reader\CSV\Reader as CSVReader;
  */
 class ImportService
 {
+
+    public function __construct()
+    {
+    }
+
     /**
      * Read and parse a CSV file.
      *
@@ -77,6 +84,7 @@ class ImportService
      *
      * @param string $filePath Absolute path to the CSV file to import
      * @param int $userId The ID of the user importing contacts
+     * @param string|null $fileName Optional original file name for tracking
      *
      * @return array<string, mixed> Result array with structure:
      *                              [
@@ -95,12 +103,12 @@ class ImportService
      * ]
      * ```
      */
-    public function importContacts(string $filePath, int $userId): array
+    public function importContacts(string $filePath, int $userId, ?string $fileName = null): array
     {
         try {
             $rows = $this->readCsvFile($filePath);
         } catch (\Exception $e) {
-            Log::error('CSV reading error: ' . $e->getMessage());
+            // Log::error('CSV reading error: ' . $e->getMessage());
             return [
                 'imported' => 0,
                 'errors' => ['CSV file reading error: ' . $e->getMessage()],
@@ -122,7 +130,7 @@ class ImportService
                 $phone,
                 $birthday,
                 $categoryName,
-            ] = array_pad($row['cells'], 5, null);
+            ] = $this->parseRowCells($row['cells']); // Example: ['John', 'john@test.com'] becomes ['John', 'john@test.com', null, null, null]
 
             $rowNumber = $row['index'];
 
@@ -140,43 +148,23 @@ class ImportService
             }
 
             // Match category by name
-            $categoryId = null;
-            if (!empty($categoryName)) {
-                $category = Category::where('name', trim($categoryName))
-                    ->first();
-                $categoryId = $category?->id;
+            $categoryId = $this->getCategoryId($categoryName);
+
+            if ($this->checkForDuplicateEmail($userId, $email)) {
+                $errors[] = __('messages.import_duplicate_email', ['row' => $rowNumber, 'email' => $email]);
+                continue;
             }
 
-            // Check for duplicate email (per user)
-            if (!empty($email)) {
-                $existingContact = Contact::where('user_id', $userId)
-                    ->where('email', trim($email))
-                    ->exists();
-
-                if ($existingContact) {
-                    $errors[] = __('messages.import_duplicate_email', ['row' => $rowNumber, 'email' => $email]);
-                    continue;
-                }
-            }
-
-            // Create contact
             try {
-                Contact::create([
-                    'user_id' => $userId,
-                    'name' => trim($name),
-                    'email' => !empty($email) ? trim($email) : null,
-                    'phone' => !empty($phone) ? trim($phone) : null,
-                    'birthday' => $parsedBirthday->format('Y-m-d'),
-                    'category_id' => $categoryId,
-                    'slug' => \Illuminate\Support\Str::slug(trim($name)),
-                ]);
-
+                $this->storeContactResult($userId, $name, $email, $phone, $parsedBirthday, $categoryId);
                 $importedCount++;
             } catch (\Exception $e) {
-                Log::error('Contact creation error on row ' . $rowNumber . ': ' . $e->getMessage());
+                // Log::error('Contact creation error on row ' . $rowNumber . ': ' . $e->getMessage());
                 $errors[] = __('messages.import_row_error', ['row' => $rowNumber]);
             }
         }
+
+        $this->storeImportResult($userId, $importedCount, $errors, $fileName);
 
         return [
             'imported' => $importedCount,
@@ -241,5 +229,106 @@ class ImportService
         }
 
         return null;
+    }
+
+
+    /**
+     * Store the import result record.
+     *
+     * @param int $userId
+     * @param int $importedCount
+     * @param array $errors
+     * @param string|null $fileName
+     *
+     * @return Import The created import record
+     */
+    public function storeImportResult(int $userId, int $importedCount, array $errors, ?string $fileName = null): Import
+    {
+        return Import::create([
+            'user_id' => $userId,
+            'imported_count' => $importedCount,
+            'error_count' => count($errors),
+            'errors' => !empty($errors) ? $errors : null,
+            'file_name' => $fileName,
+        ]);
+    }
+
+    /**
+     * Store a single contact result during import without triggering observers.
+     *
+     * @param int $userId
+     * @param string $name
+     * @param string|null $email
+     * @param string|null $phone
+     * @param DateTime $birthday
+     * @param int|null $categoryId
+     *
+     * @return Contact The created contact
+     */
+    public function storeContactResult(int $userId, string $name, ?string $email, ?string $phone, DateTime $birthday, ?int $categoryId): Contact
+    {
+        return Model::withoutEvents(function () use ($userId, $name, $email, $phone, $birthday, $categoryId) {
+            return Contact::create([
+                'user_id' => $userId,
+                'name' => trim($name),
+                'email' => !empty($email) ? trim($email) : null,
+                'phone' => !empty($phone) ? trim($phone) : null,
+                'birthday' => $birthday->format('Y-m-d'),
+                'category_id' => $categoryId,
+                'slug' => \Illuminate\Support\Str::slug(trim($name)),
+            ]);
+        });
+    }
+
+    /**
+     * Check if an email already exists for a user.
+     *
+     * @param int $userId
+     * @param string|null $email
+     *
+     * @return bool True if email exists for user, false otherwise
+     */
+    public function checkForDuplicateEmail(int $userId, ?string $email): bool
+    {
+        if (empty($email)) {
+            return false;
+        }
+
+        return Contact::where('user_id', $userId)
+            ->where('email', trim($email))
+            ->exists();
+    }
+
+    /**
+     * Get category ID by name.
+     *
+     * @param string|null $categoryName
+     *
+     * @return int|null The category ID if found, null otherwise
+     */
+    public function getCategoryId(?string $categoryName): ?int
+    {
+        if (empty($categoryName)) {
+            return null;
+        }
+
+        return Category::where('name', trim($categoryName))
+            ->first()?->id;
+    }
+
+    /**
+     * Parse CSV row cells into contact data.
+     *
+     * Extracts and pads the row cells to ensure 5 elements:
+     * [name, email, phone, birthday, category]
+     *
+     * @param array $cells The row cells from CSV
+     *
+     * @return array Array of exactly 5 elements (name, email, phone, birthday, categoryName)
+     */
+    public function parseRowCells(array $cells): array
+    {
+        // Pad to 5 elements with null for missing columns
+        return array_pad($cells, 5, null);
     }
 }

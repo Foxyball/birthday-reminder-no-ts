@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ImportContactsRequest;
+use App\Models\Import;
 use App\Services\ImportService;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -57,8 +59,9 @@ class ImportController extends Controller
         try {
             $file = $request->file('file');
             $filePath = $file->path();
+            $fileName = $file->getClientOriginalName();
 
-            $result = $this->importService->importContacts($filePath, auth()->id());
+            $result = $this->importService->importContacts($filePath, auth()->id(), $fileName);
 
             if ($result['imported'] === 0) {
                 return response()->json([
@@ -77,7 +80,7 @@ class ImportController extends Controller
             ]);
         } catch (\Exception $e) {
             // log the error for debugging
-            Log::error('Import error: ' . $e->getMessage());
+            // Log::error('Import error: ' . $e->getMessage());
 
             return response()->json([
                 'status' => 'error',
@@ -99,5 +102,22 @@ class ImportController extends Controller
         $filePath = public_path('import_contact_template.csv');
 
         return response()->download($filePath, 'contacts-template.csv');
+    }
+
+    /**
+     * Display import details with errors and statistics.
+     *
+     * @param Import $import The import record to display
+     *
+     * @return \Illuminate\View\View The import details view
+     */
+    public function details(Import $import)
+    {
+        // Authorize only the user who performed the import
+        Gate::authorize('view', $import);
+
+        return view('import.details', [
+            'import' => $import,
+        ]);
     }
 }
