@@ -115,14 +115,13 @@ class ContactController extends Controller
         return redirect()->route('contact.index')->with('status', __(self::UPDATE_MESSAGE));
     }
 
-
     private function combineBirthdayFields($day, $month, $year)
     {
-        if (!$day && !$month && !$year) {
+        if (! $day && ! $month && ! $year) {
             return null;
         }
 
-        if (!$day || !$month) {
+        if (! $day || ! $month) {
             return null;
         }
 
@@ -163,4 +162,3 @@ class ContactController extends Controller
         return response(['status' => 'success', 'message' => __(self::STATUS_UPDATE_MESSAGE)]);
     }
 }
-

@@ -23,6 +23,7 @@ class ContactDataTable extends DataTable
             ->addColumn('image', function ($query) {
                 if ($query->image) {
                     $imageUrl = \App\Helpers\ImageHelper::url($query->image);
+
                     return '<div class="flex items-center justify-center h-10 w-10 rounded-full overflow-hidden border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700">
                         <img src="'.$imageUrl.'" alt="'.$query->name.'" class="h-full w-full object-cover">
                     </div>';
@@ -30,7 +31,7 @@ class ContactDataTable extends DataTable
                     $firstLetter = strtoupper(substr($query->name, 0, 1));
                     $bgColors = ['bg-brand-500', 'bg-success-500', 'bg-warning-500', 'bg-error-500', 'bg-info-500'];
                     $bgColor = $bgColors[ord($firstLetter) % count($bgColors)];
-                    
+
                     return '<div class="flex items-center justify-center h-10 w-10 rounded-full border border-gray-300 dark:border-gray-600 '.$bgColor.' text-white text-xs font-semibold">
                         '.$firstLetter.'
                     </div>';
@@ -117,6 +118,6 @@ class ContactDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Contact_' . date('YmdHis');
+        return 'Contact_'.date('YmdHis');
     }
 }

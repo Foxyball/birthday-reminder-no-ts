@@ -6,8 +6,6 @@ class Constants
 {
     /**
      * Get all months with their numeric values.
-     *
-     * @return array
      */
     public static function months(): array
     {
