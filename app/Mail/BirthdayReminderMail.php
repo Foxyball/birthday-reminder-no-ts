@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -21,8 +20,7 @@ class BirthdayReminderMail extends Mailable
         public User $user,
         public array $contacts,
         public \Carbon\Carbon $today
-    ) {
-    }
+    ) {}
 
     /**
      * Get the message envelope.
