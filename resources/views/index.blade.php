@@ -145,7 +145,7 @@
                             <td class="py-3">
                                 <div class="flex items-center">
                                     <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                        {{ $contact->created_at->format('M d, Y') }}
+                                        {{ $contact->created_at->format('d-m-Y') }}
                                     </p>
                                 </div>
                             </td>
