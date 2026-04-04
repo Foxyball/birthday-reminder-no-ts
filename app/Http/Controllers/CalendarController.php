@@ -28,6 +28,7 @@ class CalendarController extends Controller
             })
             ->map(function ($contact) {
                 [$year, $month, $day] = explode('-', $contact->birthday);
+
                 return [
                     'id' => $contact->id,
                     'name' => $contact->name,
