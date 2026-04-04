@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\ImageHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,7 +33,13 @@ class Contact extends Model
             'status' => 'boolean',
             'is_locked' => 'boolean',
             'locked_at' => 'datetime',
+            'birthday' => 'date',
         ];
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function category(): BelongsTo
@@ -43,23 +50,22 @@ class Contact extends Model
     /**
      * Get the full URL to the contact's image.
      */
-    //    public function getImageUrlAttribute(): ?string
-    //    {
-    //        return ImageHelper::url($this->image);
-    //    }
+    public function getImageUrlAttribute(): ?string
+    {
+        return ImageHelper::url($this->image);
+    }
 
     /**
      * Boot method to handle model events.
      */
-    //    protected static function boot()
-    //    {
-    //        parent::boot();
-    //
-    //        // Clean up image file when contact is deleted
-    //        static::deleting(function (Contact $contact) {
-    //            if ($contact->image) {
-    //                ImageHelper::delete($contact->image);
-    //            }
-    //        });
-    //    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function (Contact $contact) {
+            if ($contact->image) {
+                ImageHelper::delete($contact->image);
+            }
+        });
+    }
 }
