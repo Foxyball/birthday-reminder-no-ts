@@ -206,4 +206,11 @@ return [
     'import_errors' => 'Import Errors',
     'import_no_errors' => 'No errors - all contacts imported successfully!',
     'back' => 'Back to Dashboard',
+
+    // Dashboard
+    'total_contacts' => 'Total Contacts',
+    'upcoming_birthdays' => 'Upcoming Birthdays',
+    'recent_contacts' => 'Recent Contacts',
+    'created_at' => 'Created At',
+    'no_contacts' => 'No contacts found',
 ];

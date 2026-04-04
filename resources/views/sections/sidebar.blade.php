@@ -60,7 +60,7 @@
                     <li>
                         <a
                             href="{{ route('dashboard') }}"
-                            class="menu-item group {{ SidebarHelper::setActive(['dashboard']) }}"
+                            class="menu-item group text-lg {{ SidebarHelper::setActive(['dashboard']) }}"
                         >
                             <svg
                                 class="menu-item-icon"
@@ -86,7 +86,7 @@
                     <li>
                         <a
                             href="{{ route('calendar.index') }}"
-                            class="menu-item group {{ SidebarHelper::setActive(['calendar']) }}"
+                            class="menu-item group text-lg {{ SidebarHelper::setActive(['calendar']) }}"
                         >
                             <svg
                                 class="menu-item-icon"
@@ -113,7 +113,7 @@
                         <li>
                             <a
                                 href="{{ route('category.index') }}"
-                                class="menu-item group {{ SidebarHelper::setActive(['category.*']) }}"
+                                class="menu-item group text-lg {{ SidebarHelper::setActive(['category.*']) }}"
                             >
                                 <svg
                                     class="menu-item-icon"
@@ -136,35 +136,9 @@
                         </li>
 
                         <li>
-                            <button
-                                type="button"
-                                onclick="openImportModal()"
-                                class="menu-item group w-full text-left"
-                            >
-                                <svg
-                                    class="menu-item-icon"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        fill-rule="evenodd"
-                                        clip-rule="evenodd"
-                                        d="M3 2.75a.75.75 0 01.75.75v2.19A6.75 6.75 0 0112 3a6.75 6.75 0 015.636 2.982.75.75 0 101.228-.836A8.25 8.25 0 1012 20.25c-3.95 0-7.314-2.725-8.25-6.25h2.19a.75.75 0 000-1.5H3.75A.75.75 0 013 12V3.75A.75.75 0 013.75 3H6a.75.75 0 010 1.5H3.75A.75.75 0 013 3.5v-.75A.75.75 0 013 2.75zM11.25 7.5a.75.75 0 01.75.75v2.69l1.47-1.47a.75.75 0 111.06 1.06l-2.75 2.75a.75.75 0 01-1.06 0l-2.75-2.75a.75.75 0 111.06-1.06l1.47 1.47V8.25a.75.75 0 01.75-.75z"
-                                    />
-                                </svg>
-                                <span class="menu-item-text" :class="sidebarToggle ? 'lg:hidden' : ''">
-                                    {{ __('messages.import_contacts') }}
-                                </span>
-                            </button>
-                        </li>
-
-                        <li>
                             <a
                                 href="{{ route('contact.index') }}"
-                                class="menu-item group {{ SidebarHelper::setActive(['contact.*']) }}"
+                                class="menu-item group text-lg {{ SidebarHelper::setActive(['contact.*']) }}"
                             >
                                 <svg
                                     class="menu-item-icon"
@@ -190,7 +164,7 @@
                             <button
                                 type="button"
                                 @click="openUsers = !openUsers"
-                                class="menu-item group w-full {{ SidebarHelper::setActive(['users.*']) }}"
+                                class="menu-item group w-full text-lg {{ SidebarHelper::setActive(['users.*']) }}"
                             >
                                 <svg
                                     class="menu-item-icon"
@@ -238,6 +212,32 @@
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+
+                        <li class="border-t border-gray-200 dark:border-gray-800 pt-4 mt-4">
+                            <button
+                                type="button"
+                                onclick="openImportModal()"
+                                class="menu-item group w-full text-left text-lg font-medium"
+                            >
+                                <svg
+                                    class="menu-item-icon"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        clip-rule="evenodd"
+                                        d="M3 2.75a.75.75 0 01.75.75v2.19A6.75 6.75 0 0112 3a6.75 6.75 0 015.636 2.982.75.75 0 101.228-.836A8.25 8.25 0 1012 20.25c-3.95 0-7.314-2.725-8.25-6.25h2.19a.75.75 0 000-1.5H3.75A.75.75 0 013 12V3.75A.75.75 0 013.75 3H6a.75.75 0 010 1.5H3.75A.75.75 0 013 3.5v-.75A.75.75 0 013 2.75zM11.25 7.5a.75.75 0 01.75.75v2.69l1.47-1.47a.75.75 0 111.06 1.06l-2.75 2.75a.75.75 0 01-1.06 0l-2.75-2.75a.75.75 0 111.06-1.06l1.47 1.47V8.25a.75.75 0 01.75-.75z"
+                                    />
+                                </svg>
+                                <span class="menu-item-text text-base" :class="sidebarToggle ? 'lg:hidden' : ''">
+                                    {{ __('messages.import_contacts') }}
+                                </span>
+                            </button>
                         </li>
                     @endif
                     @endauth
