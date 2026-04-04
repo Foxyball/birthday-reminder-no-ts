@@ -36,7 +36,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        // Suppress model events to prevent observer notifications during logout
+        \Illuminate\Database\Eloquent\Model::withoutEvents(fn () => Auth::logout());
 
         $request->session()->invalidate();
 

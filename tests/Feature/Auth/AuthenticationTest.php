@@ -55,8 +55,8 @@ test('users can logout', function () {
 
     $response = $this->actingAs($user)->post('/logout');
 
-    $this->assertGuest();
     $response->assertRedirect('/');
+    $this->assertGuest();
 });
 
 test('soft deleted users can not authenticate using google login', function () {
