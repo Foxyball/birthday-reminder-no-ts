@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Models\Category;
 use App\Models\Contact;
+use App\Models\Import;
 use App\Models\User;
 use App\Observers\CategoryObserver;
 use App\Observers\ContactObserver;
+use App\Observers\ImportObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Cashier\Cashier;
@@ -31,5 +33,6 @@ class AppServiceProvider extends ServiceProvider
         Category::observe(CategoryObserver::class);
         User::observe(UserObserver::class);
         Contact::observe(ContactObserver::class);
+        Import::observe(ImportObserver::class);
     }
 }
