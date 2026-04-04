@@ -137,4 +137,14 @@ return [
     'current_password_placeholder' => 'Въведете текущата си парола',
     'profile_updated_successfully' => 'Профилът беше актуализиран успешно.',
     'password_updated_successfully' => 'Паролата беше актуализирана успешно.',
+
+    // Observer notifications
+    'observer_category_added' => 'Категория добавена: :name',
+    'observer_category_added_message' => 'Успешно създадохте нова категория.',
+    'observer_user_created' => 'Потребител създаден: :name',
+    'observer_user_created_message' => 'Създаден е нов потребител.',
+    'observer_user_updated' => 'Потребител актуализиран: :name',
+    'observer_user_updated_message' => 'Данните на потребителя са актуализирани.',
+    'observer_contact_added' => 'Контакт добавен: :name',
+    'observer_contact_added_message' => 'Успешно добавихте нов контакт.',
 ];

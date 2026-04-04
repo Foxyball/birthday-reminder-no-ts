@@ -30,10 +30,10 @@ class ContactDataTable extends DataTable
                     </div>';
                 } else {
                     $firstLetter = strtoupper(substr($query->name, 0, 1));
-                    $bgColors = ['bg-brand-500', 'bg-success-500', 'bg-warning-500', 'bg-error-500', 'bg-info-500'];
+                    $bgColors = ['bg-brand-500', 'bg-success-500', 'bg-warning-500', 'bg-error-500'];
                     $bgColor = $bgColors[ord($firstLetter) % count($bgColors)];
 
-                    return '<div class="flex items-center justify-center h-10 w-10 rounded-full border border-gray-300 dark:border-gray-600 '.$bgColor.' text-white text-xs font-semibold">
+                    return '<div class="flex items-center justify-center h-10 w-10 rounded-full border border-gray-300 dark:border-gray-600 '.$bgColor.' text-gray-800 dark:text-gray-300 text-xs font-semibold">
                         '.$firstLetter.'
                     </div>';
                 }

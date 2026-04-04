@@ -17,10 +17,10 @@ class UserObserver
         if (Auth::check() && Auth::id() !== $user->id) {
             Notification::createSuccessNotification(
                 Auth::id(),
-                "User created: {$user->name}",
+                __('messages.observer_user_created', ['name' => $user->name]),
                 $user,
-                "A new user has been created.",
-                "/users/{$user->id}/edit"
+                __('messages.observer_user_created_message'),
+                "/bgc/users/{$user->id}/edit"
             );
         }
     }
@@ -33,10 +33,10 @@ class UserObserver
         if (Auth::check()) {
             Notification::createInfoNotification(
                 Auth::id(),
-                "User updated: {$user->name}",
+                __('messages.observer_user_updated', ['name' => $user->name]),
                 $user,
-                "User details have been updated.",
-                "/users/{$user->id}/edit"
+                __('messages.observer_user_updated_message'),
+                "/bgc/users/{$user->id}/edit"
             );
         }
     }

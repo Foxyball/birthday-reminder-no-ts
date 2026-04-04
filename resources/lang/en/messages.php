@@ -138,4 +138,14 @@ return [
     'current_password_placeholder' => 'Enter your current password',
     'profile_updated_successfully' => 'Profile updated successfully.',
     'password_updated_successfully' => 'Password updated successfully.',
+
+    // Observer notifications
+    'observer_category_added' => 'Category added: :name',
+    'observer_category_added_message' => 'You\'ve successfully created a new category.',
+    'observer_user_created' => 'User created: :name',
+    'observer_user_created_message' => 'A new user has been created.',
+    'observer_user_updated' => 'User updated: :name',
+    'observer_user_updated_message' => 'User details have been updated.',
+    'observer_contact_added' => 'Contact added: :name',
+    'observer_contact_added_message' => 'You\'ve successfully added a new contact.',
 ];

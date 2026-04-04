@@ -16,10 +16,10 @@ class ContactObserver
         if (Auth::check()) {
             Notification::createSuccessNotification(
                 Auth::id(),
-                "Contact added: {$contact->name}",
+                __('messages.observer_contact_added', ['name' => $contact->name]),
                 $contact,
-                "You've successfully added a new contact.",
-                "/contact/{$contact->id}/edit"
+                __('messages.observer_contact_added_message'),
+                "/bgc/contact/{$contact->id}/edit"
             );
         }
     }

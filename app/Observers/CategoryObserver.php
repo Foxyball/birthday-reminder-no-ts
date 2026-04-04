@@ -17,10 +17,10 @@ class CategoryObserver
         if (Auth::check()) {
             Notification::createSuccessNotification(
                 Auth::id(),
-                "Category added: {$category->name}",
+                __('messages.observer_category_added', ['name' => $category->name]),
                 $category,
-                "You've successfully created a new category.",
-                "/categories?search=" . urlencode($category->name)
+                __('messages.observer_category_added_message'),
+                "/bgc/category/{$category->id}/edit"
             );
         }
     }
