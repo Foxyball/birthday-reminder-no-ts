@@ -23,10 +23,10 @@ class ImportObserver
         ]);
 
         $title = __('messages.import_contacts');
-        $message = 'Imported ' . $import->imported_count . ' contacts';
-        
+        $message = 'Imported '.$import->imported_count.' contacts';
+
         if ($import->error_count > 0) {
-            $message .= ' with ' . $import->error_count . ' errors';
+            $message .= ' with '.$import->error_count.' errors';
         }
 
         Notification::createInfoNotification(

@@ -105,8 +105,7 @@ class ImportController extends Controller
     /**
      * Display import details with errors and statistics.
      *
-     * @param Import $import The import record to display
-     *
+     * @param  Import  $import  The import record to display
      * @return \Illuminate\View\View The import details view
      */
     public function details(Import $import)

@@ -26,10 +26,7 @@ use OpenSpout\Reader\CSV\Reader as CSVReader;
  */
 class ImportService
 {
-
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Read and parse a CSV file.
@@ -79,10 +76,9 @@ class ImportService
      * Errors are logged and collected without stopping the import process.
      * Successfully created contacts are returned along with any errors encountered.
      *
-     * @param string $filePath Absolute path to the CSV file to import
-     * @param int $userId The ID of the user importing contacts
-     * @param string|null $fileName Optional original file name for tracking
-     *
+     * @param  string  $filePath  Absolute path to the CSV file to import
+     * @param  int  $userId  The ID of the user importing contacts
+     * @param  string|null  $fileName  Optional original file name for tracking
      * @return array<string, mixed> Result array with structure:
      *                              [
      *                              'imported' => int (number of successfully created contacts),
@@ -151,6 +147,7 @@ class ImportService
 
             if ($this->checkForDuplicateEmail($userId, $email)) {
                 $errors[] = __('messages.import_duplicate_email', ['row' => $rowNumber, 'email' => $email]);
+
                 continue;
             }
 
@@ -229,14 +226,9 @@ class ImportService
         return null;
     }
 
-
     /**
      * Store the import result record.
      *
-     * @param int $userId
-     * @param int $importedCount
-     * @param array $errors
-     * @param string|null $fileName
      *
      * @return Import The created import record
      */
@@ -246,7 +238,7 @@ class ImportService
             'user_id' => $userId,
             'imported_count' => $importedCount,
             'error_count' => count($errors),
-            'errors' => !empty($errors) ? $errors : null,
+            'errors' => ! empty($errors) ? $errors : null,
             'file_name' => $fileName,
         ]);
     }
@@ -254,12 +246,6 @@ class ImportService
     /**
      * Store a single contact result during import without triggering observers.
      *
-     * @param int $userId
-     * @param string $name
-     * @param string|null $email
-     * @param string|null $phone
-     * @param DateTime $birthday
-     * @param int|null $categoryId
      *
      * @return Contact The created contact
      */
@@ -269,8 +255,8 @@ class ImportService
             return Contact::create([
                 'user_id' => $userId,
                 'name' => trim($name),
-                'email' => !empty($email) ? trim($email) : null,
-                'phone' => !empty($phone) ? trim($phone) : null,
+                'email' => ! empty($email) ? trim($email) : null,
+                'phone' => ! empty($phone) ? trim($phone) : null,
                 'birthday' => $birthday->format('Y-m-d'),
                 'category_id' => $categoryId,
                 'slug' => \Illuminate\Support\Str::slug(trim($name)),
@@ -281,8 +267,6 @@ class ImportService
     /**
      * Check if an email already exists for a user.
      *
-     * @param int $userId
-     * @param string|null $email
      *
      * @return bool True if email exists for user, false otherwise
      */
@@ -300,7 +284,6 @@ class ImportService
     /**
      * Get category ID by name.
      *
-     * @param string|null $categoryName
      *
      * @return int|null The category ID if found, null otherwise
      */
@@ -320,8 +303,7 @@ class ImportService
      * Extracts and pads the row cells to ensure 5 elements:
      * [name, email, phone, birthday, category]
      *
-     * @param array $cells The row cells from CSV
-     *
+     * @param  array  $cells  The row cells from CSV
      * @return array Array of exactly 5 elements (name, email, phone, birthday, categoryName)
      */
     public function parseRowCells(array $cells): array
