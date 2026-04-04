@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialAuthLoginController;
@@ -31,6 +32,11 @@ Route::get('/lang/{locale}', function (string $locale) {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/bgc/category/change-status', [CategoryController::class, 'changeStatus'])->name('admin.category.change-status');
     Route::resource('/bgc/category', CategoryController::class);
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::put('/bgc/contact/change-status', [ContactController::class, 'changeStatus'])->name('admin.contact.change-status');
+    Route::resource('/bgc/contact', ContactController::class);
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {

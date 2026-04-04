@@ -9,6 +9,7 @@ return [
     'create_user' => 'Create User',
     'edit_user' => 'Edit User',
     'deactivated_users' => 'Deactivated Users',
+    'category' => 'Category',
 
     // Category
     'create_category' => 'Create Category',

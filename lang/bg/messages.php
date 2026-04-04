@@ -9,6 +9,7 @@ return [
     'create_user' => 'Създай потребител',
     'edit_user' => 'Редактирай потребител',
     'deactivated_users' => 'Деактивирани потребители',
+    'category' => 'Категория',
 
     // Category
     'create_category' => 'Създай категория',
