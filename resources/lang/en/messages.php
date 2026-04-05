@@ -159,6 +159,13 @@ return [
     'mail_closing' => 'Have a great day!',
     'mail_footer' => 'This is an automated email, do not reply.',
 
+    // Account Created Mail
+    'account_created_subject' => 'Your Account Has Been Created',
+    'account_created_welcome' => 'Your account has been successfully created by an administrator. Please set your password using the button below to activate your account.',
+    'account_created_reset_instruction' => 'Click the button below to set your password:',
+    'account_created_reset_password' => 'Set Your Password',
+    'account_created_link_expires' => 'This link will expire in 60 minutes for security reasons.',
+
     // Calendar
     'birthday_calendar' => 'Calendar',
     'prev_month' => 'Previous',

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\DataTables\DeactivatedUserDataTable;
 use App\DataTables\UserDataTable;
 use App\Http\Requests\StoreUserRequest;
+use App\Mail\AccountCreatedMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -38,7 +40,12 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        User::create($request->validated());
+        $user = User::create($request->validated());
+
+        // Send account created email if the new user is an admin
+        if ((int) $request->role === 1) {
+            Mail::to($user->email)->send(new AccountCreatedMail($user));
+        }
 
         return redirect()->route('users.index')->with('status', __(self::SUCCESS_MESSAGE));
     }

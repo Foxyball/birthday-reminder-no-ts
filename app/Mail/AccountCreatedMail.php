@@ -8,19 +8,22 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Password;
 
-class BirthdayReminderMail extends Mailable
+class AccountCreatedMail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public string $resetToken;
 
     /**
      * Create a new message instance.
      */
     public function __construct(
-        public User $user,
-        public array $contacts,
-        public \Carbon\Carbon $today
-    ) {}
+        public User $user
+    ) {
+        $this->resetToken = Password::createToken($this->user);
+    }
 
     /**
      * Get the message envelope.
@@ -28,7 +31,7 @@ class BirthdayReminderMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('messages.birthday_reminder_subject', ['count' => count($this->contacts)]),
+            subject: __('messages.account_created_subject'),
             from: config('mail.from.address'),
         );
     }
@@ -39,11 +42,10 @@ class BirthdayReminderMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.birthday-reminder',
+            view: 'emails.account-created',
             with: [
                 'user' => $this->user,
-                'contacts' => $this->contacts,
-                'today' => $this->today,
+                'resetUrl' => url(route('password.reset', ['token' => $this->resetToken, 'email' => $this->user->email], false)),
             ]
         );
     }
