@@ -112,6 +112,13 @@ return [
     'mail_closing' => 'Имайте чудесен ден!',
     'mail_footer' => 'Това е автоматичен имейл, не отговаряйте.',
 
+    // Account Created Mail
+    'account_created_subject' => 'Вашият акаунт е създаден',
+    'account_created_welcome' => 'Вашият акаунт е успешно създаден от администратор. Моля, задайте вашата парола, като използвате бутона по-долу, за да активирате вашия акаунт.',
+    'account_created_reset_instruction' => 'Кликнете върху бутона по-долу, за да зададете парола:',
+    'account_created_reset_password' => 'Задайте вашата парола',
+    'account_created_link_expires' => 'Тази връзка ще изтече за 60 минути по причини на сигурност.',
+
     // Calendar
     'birthday_calendar' => 'Календар на рождените дни',
     'prev_month' => 'Предишен',
