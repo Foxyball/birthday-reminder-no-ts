@@ -29,7 +29,7 @@ class BirthdayReminderMail extends Mailable
     {
         return new Envelope(
             subject: __('messages.birthday_reminder_subject', ['count' => count($this->contacts)]),
-            from: 'BalikG Reminder',
+            from: config('mail.from.address'),
         );
     }
 
